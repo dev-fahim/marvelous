@@ -35,7 +35,7 @@
                     </li>
                     {% if request.user.is_authenticated and request.user.is_superuser %}
                         <li class="nav-item">
-                            <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create a account</a></b>
+                            <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create an account</a></b>
                         </li>
                     {% endif %}
                 {% else %}
