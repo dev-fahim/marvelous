@@ -41,7 +41,7 @@ def signup(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            return HttpResponseRedirect(reverse('account:login'))
+            return HttpResponseRedirect(reverse('account:profile'))
     else:
         user_form = forms.SignUpForm()
 
