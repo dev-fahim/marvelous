@@ -44,7 +44,7 @@
             <div class="alert alert-secondary d-print-none">
                 <a class="btn btn-md btn-outline-success" href="{% url 'account:expend_update' pk=expend.pk %}">Update Record</a>
                 <a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Remove Record</a>
-                <a class="btn btn-lg btn-outline-primary" href="{% url 'account:expend' %}">Go bake to your Expend List</a>
+                <a class="btn btn-md btn-outline-primary" href="{% url 'account:expend' %}">Go bake to your Expend List</a>
             </div>
         {% endif %}
     {% else %}
