@@ -5,7 +5,7 @@
     {% if request.user.is_authenticated and expend.by_user == request.user.username or request.user.is_superuser %}
     <div class="row">
         <div class="col-lg-5 col-md-6">
-            <h2 class="text-muted">Expenditure Detail <small class="d-print-none"><i>based on your account</i></small></h2><br><br>
+            <h2 class="text-muted">Expenditure Detail <small class="d-print-none"><i>based on your account</i></small></h2><br>
                 <table class="table">
                     <tr>
                         <td><b>Expended By:</b></td>
@@ -31,7 +31,8 @@
                     </tr>
                     <tr>
                         <td><b>Verified:</b></td>
-                        <td><b><i>{{ expend.verified|title }}</i></b></td>
+                        <td>{% if expend.verified == 'no' %}<i class="fas fa-times" style="font-size:1.2em; color:#c91218"></i> <span class="badge badge-danger">Not Verified</span>
+                            {% else %}<i class="fas fa-calendar-check" style="font-size:1.2em; color:#13c44b"></i> <span class="badge badge-success">Verified</span>{% endif %}</td>
                     </tr><tr>
                         <td><b>Description:</b></td>
                         <td><b><i>{% if expend.description == '' %}No Description{% else %}{{ expend.description }}{% endif %}</i></b></td>
