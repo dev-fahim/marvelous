@@ -48,7 +48,8 @@
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
                         <td class="d-print-none"><a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Delete</a></td>
-                        <th>{{ expend.verified|title }}</th>
+                        <th>{% if expend.verified == 'no' %}<i class="fas fa-times" style="font-size:1.2em; color:#c91218"></i> <span class="badge badge-danger">Not Verified</span>
+                            {% else %}<i class="fas fa-calendar-check" style="font-size:1.2em; color:#13c44b"></i> <span class="badge badge-success">Verified</span>{% endif %}</th>
                     </tr>
                 {% endfor %}
                 {% else %}
@@ -58,7 +59,8 @@
                         <td>{{ expend.expend_in|title }}</td>
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
-                        <th>{{ expend.verified|title }}</th>
+                        <th>{% if expend.verified == 'no' %}<i class="fas fa-times" style="font-size:1.2em; color:#c91218"></i> <span class="badge badge-danger">Not Verified</span>
+                            {% else %}<i class="fas fa-calendar-check" style="font-size:1.2em; color:#13c44b"></i> <span class="badge badge-success">Verified</span>{% endif %}</th>
                     </tr>
                 {% endfor %}
                 {% endif %}
