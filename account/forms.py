@@ -9,7 +9,7 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'password')
 
 
 class UpdateUserForm(forms.ModelForm):
