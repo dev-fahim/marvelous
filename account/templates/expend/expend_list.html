@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <h2 class="text-muted">Expenditure List <small><i>based on your account</i></small></h2>
+            <div class="text-right">
+                <a type="submit" class="btn btn-md btn-outline-primary" href="{% url 'account:expend_create' %}">Add Expend</a>
+            </div><br>
+            <div class="alert alert-secondary">
+                {% if request.user.is_authenticated and request.user.is_superuser %}
+                    <i><b>Your expend amount: <mark>{{ sum_user_expend_amount }}</mark> Taka & Full expend amount: <mark>{{ sum_expend_amount }}</mark> Taka</b></i>
+                {% else %}
+                    <i><b>Your expend amount: <mark>{{ sum_user_expend_amount }}</mark> Taka</b></i>
+                {% endif %}
+            </div>
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Expended By</th>
+                        <th>Expended In</th>
+                        <th>Expend Amount</th>
+                        <th>Expend Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                {% if request.user.is_authenticated and request.user.is_superuser %}
+                {% for expend in expend_list %}
+                    <tr>
+                        <td><a href="{{ expend.get_absolute_url }}">{{ expend.by_user|title }}</a></td>
+                        <td>{{ expend.expend_in|title }}</td>
+                        <td>{{ expend.expend_amount }}</td>
+                        <td>{{ expend.added_date }}</td>
+                        <td><a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                {% for expend in expend_list_user %}
+                    <tr>
+                        <td><a href="{{ expend.get_absolute_url }}">{{ expend.by_user|title }}</a></td>
+                        <td>{{ expend.expend_in|title }}</td>
+                        <td>{{ expend.expend_amount }}</td>
+                        <td>{{ expend.added_date }}</td>
+                    </tr>
+                {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+  Profile {{ request.user.user_profile.slug }}
+{% load bootstrap4 %}
+{% endblock %}
+{% if request.user.is_authenticated %}
+{% block content %}<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_form user_base_form %}
+                {% bootstrap_form user_form %}
+                <input class="btn btn-lg btn-outline-primary btn-block" type="submit" value="Update Profile"><br/>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% endif %}
