@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-  Profile {{ request.user.user_profile.slug }}
+  Profile {{ request.user.username|title }}
 {% load bootstrap4 %}
 {% endblock %}
 {% if request.user.is_authenticated %}
