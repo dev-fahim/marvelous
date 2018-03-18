@@ -81,7 +81,9 @@ class ExpendListView(ListView):
         context = super().get_context_data(**kwargs)
         context['expend_list_user'] = models.Expend.objects.filter(by_user__exact=self.request.user.username).order_by('added_date')
         context['sum_user_expend_amount'] = models.Expend.objects.filter(by_user__exact=self.request.user.username).aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_user_expend_amount_verified'] = models.Expend.objects.filter(by_user__exact=self.request.user.username, verified__exact='yes').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
         context['sum_expend_amount'] = models.Expend.objects.aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_expend_amount_verified'] = models.Expend.objects.filter(verified__exact='yes').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
         return context
 
 
@@ -96,7 +98,7 @@ class ExpendUpdateView(UpdateView):
     template_name = 'expend/expend_form.html'
     success_url = ''
     context_object_name = 'form'
-    fields = ('source_fund', 'source_amount', 'expend_in', 'expend_amount', 'description')
+    fields = ('source_fund', 'source_amount', 'expend_in', 'expend_amount', 'description', 'verified')
 
 
 class ExpendDeleteView(DeleteView):

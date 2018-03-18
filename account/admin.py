@@ -4,7 +4,7 @@ from . import models
 
 
 class ExpendAdmin(admin.ModelAdmin):
-    list_display = ('expend_in', 'by_user', 'source_fund', 'added_date', 'verified')
+    list_display = ('expend_in', 'by_user', 'source_fund', 'added_date', 'updated_date', 'verified')
 
 
 admin.site.register(models.UserProfile)

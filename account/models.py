@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.urls import reverse
+from django.utils.timezone import now
 
 
 def user(request):
@@ -14,7 +15,8 @@ class UserProfile(models.Model):
         ('female', 'Female')
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
-    created_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     address = models.TextField(blank=True, default='')
     birth_date = models.DateField(blank=True, null=True)
     description = models.TextField(blank=True, default='')
@@ -43,7 +45,8 @@ class Expend(models.Model):
         ('no', 'no')
     )
     by_user = models.CharField(max_length=255, blank=False, unique=False, null=True)
-    added_date = models.DateTimeField(auto_now=True)
+    added_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     source_fund = models.CharField(max_length=255)
     source_amount = models.PositiveIntegerField()
     expend_in = models.CharField(max_length=255)
