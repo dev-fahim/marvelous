@@ -31,13 +31,15 @@
                             <a class="dropdown-item" href="{% url 'password_change' %}"><b>Change Password</b></a>
                             <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b>Update</b></a>
                         </div>
-
+                    </li>
+                    {% if request.user.is_authenticated and request.user.is_superuser %}
+                        <li class="nav-item">
+                            <b><a class="nav-link" href="{% url 'account:signup' %}">Create a account</a></b>
+                        </li>
+                    {% endif %}
                 {% else %}
                     <li class="nav-item">
                         <b><a class="nav-link" href="{% url 'account:login' %}">Login</a></b>
-                    </li>
-                    <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:signup' %}">Sign Up</a></b>
                     </li>
                 {% endif %}
             </ul>
@@ -45,14 +47,15 @@
     </nav>
 
 {% block header %}
-
-{% endblock %}
 <br/>
-{% block content %}
+{% endblock %}
 
+{% block content %}
+<br/>
 {% endblock %}
 
 {% block footer %}
+<br/>
 
 {% endblock %}
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

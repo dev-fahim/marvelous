@@ -1,36 +1,33 @@
 {% extends "login_base.html" %}
 {% load bootstrap4 %}
+{% block title %}Login to your account{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 col-sm-8">
-            {% if next %}
                 {% if user.is_authenticated %}
-                <p>Your account doesn't have access to this page. To proceed,
-                please login with an account that has access.</p>
+                <div class="alert alert-info" role="alert">
+                  <h4 class="alert-heading">Oh man!!!</h4>
+                  <p>You are already <mark>LOGGED IN</mark>.</p>
+                  <hr>
+                  <a class="btn btn-lg btn-outline-danger" href="{% url 'account:profile' %}">Go bake to your Account.</a>
+                </div>
                 {% else %}
-                <p>Please login to see this page.</p>
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Log in</h3>
+                        <form method="post" action="{% url 'account:login' %}">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <input type="submit" class="btn btn-block btn-outline-info" value="login" />
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                      Welcome to Manager Application
+                    </div>
+                </div>
                 {% endif %}
-            {% endif %}
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Log in</h3>
-                    <form method="post" action="{% url 'account:login' %}">
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <input type="submit" class="btn btn-block btn-outline-info" value="login" />
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    </form>
-                </div>
-                <div class="card-footer text-muted text-center">
-                  New to Django? <a href="{% url 'account:signup' %}">Sign up</a>
-                </div>
-            </div>
-            <div class="text-center py-2">
-                <small>
-                <a href="#" class="text-muted">Forgot your password?</a>
-                </small>
-            </div>
         </div>
     </div>
 </div>

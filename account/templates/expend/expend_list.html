@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
+{% block title %}
+    Expenditure List
+{% endblock %}
 {% block content %}
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-11">
-            <h2 class="text-muted">Expenditure List <small><i>based on your account</i></small></h2>
+            <h2 class="text-muted">Expenditure List <small class="d-print-none"><i>based on your account</i></small></h2>
             <div class="text-right">
-                <a type="submit" class="btn btn-md btn-outline-primary" href="{% url 'account:expend_create' %}">Add Expend</a>
+                <a type="submit" class="btn btn-md btn-outline-primary d-print-none" href="{% url 'account:expend_create' %}">Add Expend</a>
             </div><br>
             <div class="alert alert-secondary">
                 {% if request.user.is_authenticated and request.user.is_superuser %}
@@ -15,15 +18,26 @@
                 {% endif %}
             </div>
             <table class="table table-striped table-hover">
+                {% if request.user.is_authenticated and request.user.is_superuser %}
                 <thead class="thead-dark">
                     <tr>
                         <th>Expended By</th>
                         <th>Expended In</th>
-                        <th>Expend Amount</th>
+                        <th>Expend Amount (In TAKA)</th>
                         <th>Expend Date</th>
-                        <th>Action</th>
+                        <th class="d-print-none">Action</th>
                     </tr>
                 </thead>
+                {% else %}
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Expended By</th>
+                        <th>Expended In</th>
+                        <th>Expend Amount (In TAKA)</th>
+                        <th>Expend Date</th>
+                    </tr>
+                </thead>
+                {% endif %}
                 {% if request.user.is_authenticated and request.user.is_superuser %}
                 {% for expend in expend_list %}
                     <tr>
@@ -31,7 +45,7 @@
                         <td>{{ expend.expend_in|title }}</td>
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
-                        <td><a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Delete</a></td>
+                        <td class="d-print-none"><a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Delete</a></td>
                     </tr>
                 {% endfor %}
                 {% else %}
