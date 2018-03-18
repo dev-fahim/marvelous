@@ -6,9 +6,9 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-11">
-            <h2 class="text-muted">Expenditure List <small><i>based on your account</i></small></h2>
+            <h2 class="text-muted">Expenditure List <small class="d-print-none"><i>based on your account</i></small></h2>
             <div class="text-right">
-                <a type="submit" class="btn btn-md btn-outline-primary" href="{% url 'account:expend_create' %}">Add Expend</a>
+                <a type="submit" class="btn btn-md btn-outline-primary d-print-none" href="{% url 'account:expend_create' %}">Add Expend</a>
             </div><br>
             <div class="alert alert-secondary">
                 {% if request.user.is_authenticated and request.user.is_superuser %}
