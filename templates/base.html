@@ -32,9 +32,11 @@
                             <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b>Update</b></a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:signup' %}">Create a account</a></b>
-                    </li>
+                    {% if request.user.is_authenticated and request.user.is_superuser %}
+                        <li class="nav-item">
+                            <b><a class="nav-link" href="{% url 'account:signup' %}">Create a account</a></b>
+                        </li>
+                    {% endif %}
                 {% else %}
                     <li class="nav-item">
                         <b><a class="nav-link" href="{% url 'account:login' %}">Login</a></b>
