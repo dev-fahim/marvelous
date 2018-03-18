@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
@@ -19,22 +20,22 @@
                 {% if request.user.is_authenticated %}
 
                     <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:expend' %}">Expenditure</a></b>
+                        <b><a class="nav-link" href="{% url 'account:expend' %}"><i class="far fa-money-bill-alt"></i> Expenditure</a></b>
                     </li>
                     <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:logout' %}">Logout</a></b>
+                        <b><a class="nav-link" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></b>
                     </li>
                     <li class="nav-item dropdown">
-                        <a  class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><b>{{ request.user.username|title }}<b></a>
+                        <a  class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><b><i class="fas fa-user"></i> {{ request.user.username|title }}<b></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{% url 'account:profile' %}"><b>My Profile</b></a>
-                            <a class="dropdown-item" href="{% url 'password_change' %}"><b>Change Password</b></a>
-                            <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b>Update</b></a>
+                            <a class="dropdown-item" href="{% url 'account:profile' %}"><b><i class="fas fa-id-badge"></i> My Profile</b></a>
+                            <a class="dropdown-item" href="{% url 'password_change' %}"><b><i class="fas fa-key"></i> Change Password</b></a>
+                            <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b><i class="fas fa-sync"></i> Update</b></a>
                         </div>
                     </li>
                     {% if request.user.is_authenticated and request.user.is_superuser %}
                         <li class="nav-item">
-                            <b><a class="nav-link" href="{% url 'account:signup' %}">Create a account</a></b>
+                            <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create a account</a></b>
                         </li>
                     {% endif %}
                 {% else %}
