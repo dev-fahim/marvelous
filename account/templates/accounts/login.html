@@ -5,27 +5,29 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 col-sm-8">
-            {% if next %}
                 {% if user.is_authenticated %}
-                
+                <div class="alert alert-info" role="alert">
+                  <h4 class="alert-heading">Access Denied</h4>
+                  <p>You are already <mark>LOGGED IN</mark>.</p>
+                  <hr>
+                  <a class="btn btn-lg btn-outline-danger" href="{% url 'account:profile' %}">Go bake to your Account.</a>
+                </div>
                 {% else %}
-                
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Log in</h3>
+                        <form method="post" action="{% url 'account:login' %}">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <input type="submit" class="btn btn-block btn-outline-info" value="login" />
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                      Welcome to Manager Application
+                    </div>
+                </div>
                 {% endif %}
-            {% endif %}
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Log in</h3>
-                    <form method="post" action="{% url 'account:login' %}">
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <input type="submit" class="btn btn-block btn-outline-info" value="login" />
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    </form>
-                </div>
-                <div class="card-footer text-muted text-center">
-                  Welcome to Manager Application
-                </div>
-            </div>
         </div>
     </div>
 </div>
