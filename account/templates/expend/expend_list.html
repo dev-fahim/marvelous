@@ -18,15 +18,27 @@
                 {% endif %}
             </div>
             <table class="table table-striped table-hover">
+                {% if request.user.is_authenticated and request.user.is_superuser %}
                 <thead class="thead-dark">
                     <tr>
                         <th>Expended By</th>
                         <th>Expended In</th>
                         <th>Expend Amount (In TAKA)</th>
                         <th>Expend Date</th>
-                        <th>Action</th>
+                        <th class="d-print-none">Action</th>
                     </tr>
                 </thead>
+                {% else %}
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Expended By</th>
+                        <th>Expended In</th>
+                        <th>Expend Amount (In TAKA)</th>
+                        <th>Expend Date</th>
+                        <th class="d-print-none">Action</th>
+                    </tr>
+                </thead>
+                {% endif %}
                 {% if request.user.is_authenticated and request.user.is_superuser %}
                 {% for expend in expend_list %}
                     <tr>
@@ -34,7 +46,7 @@
                         <td>{{ expend.expend_in|title }}</td>
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
-                        <td><a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Delete</a></td>
+                        <td class="d-print-none"><a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Delete</a></td>
                     </tr>
                 {% endfor %}
                 {% else %}
