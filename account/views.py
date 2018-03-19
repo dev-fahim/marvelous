@@ -8,7 +8,8 @@ from django.shortcuts import render
 from . import forms
 from . import models
 from django.db.models import Sum
-
+from django.utils import timezone
+today = timezone.localdate()
 
 # Create your views here.
 
@@ -79,14 +80,156 @@ class ExpendListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['expend_list_user'] = models.Expend.objects.filter(by_user__exact=self.request.user.username).order_by('added_date')
-        context['sum_user_expend_amount'] = models.Expend.objects.filter(by_user__exact=self.request.user.username).aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
-        context['sum_user_expend_amount_verified'] = models.Expend.objects.filter(by_user__exact=self.request.user.username, verified__exact='yes').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
-        context['sum_user_expend_amount_unverified'] = models.Expend.objects.filter(by_user__exact=self.request.user.username, verified__exact='no').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['expend_list_user'] = models.Expend.objects.filter(
+            by_user__exact=self.request.user.username).order_by('added_date')
+        context['sum_user_expend_amount'] = models.Expend.objects.filter(
+            by_user__exact=self.request.user.username).aggregate(
+            Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_user_expend_amount_verified'] = models.Expend.objects.filter(
+            by_user__exact=self.request.user.username,
+            verified__exact='yes').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_user_expend_amount_unverified'] = models.Expend.objects.filter(
+            by_user__exact=self.request.user.username,
+            verified__exact='no').aggregate(
+            Sum('expend_amount')).get('expend_amount__sum', 0.00)
         context['sum_expend_amount'] = models.Expend.objects.aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
-        context['sum_expend_amount_verified'] = models.Expend.objects.filter(verified__exact='yes').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
-        context['sum_expend_amount_unverified'] = models.Expend.objects.filter(verified__exact='no').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_expend_amount_verified'] = models.Expend.objects.filter(verified__exact='yes').aggregate(
+            Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_expend_amount_unverified'] = models.Expend.objects.filter(verified__exact='no').aggregate(
+            Sum('expend_amount')).get('expend_amount__sum', 0.00)
         return context
+
+
+class ExpendListViewByDate(ListView):
+
+    def get(self, request, *args, **kwargs):
+        date = kwargs['date']
+        context = {
+            'filter_by_time': True,
+            'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
+                                                             added_date__date=date),
+            'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
+                                                                   , added_date__date=date).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                            added_date__date=date,
+                                                                            verified__exact='yes').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                              added_date__date=date,
+                                                                              verified__exact='no').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount': models.Expend.objects.filter(verified__exact='yes', added_date__date=date).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_verified': models.Expend.objects.filter(verified__exact='yes',
+                                                                       added_date__date=date).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_unverified': models.Expend.objects.filter(verified__exact='no', added_date__date=date
+                                                                         ).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+
+        }
+        return render(request, 'expend/expend_list.html', context=context)
+
+
+class ExpendListViewByToday(ListView):
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'filter_by_time': True,
+            'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
+                                                             added_date__date=today),
+            'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
+                                                                   , added_date__date=today).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                            added_date__date=today,
+                                                                            verified__exact='yes').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                              added_date__date=today,
+                                                                              verified__exact='no').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount': models.Expend.objects.filter(verified__exact='yes', added_date__date=today).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_verified': models.Expend.objects.filter(verified__exact='yes',
+                                                                       added_date__date=today).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_unverified': models.Expend.objects.filter(verified__exact='no', added_date__date=today
+                                                                         ).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+
+        }
+        return render(request, 'expend/expend_list.html', context=context)
+
+
+class ExpendListViewByYear(ListView):
+
+    def get(self, request, *args, **kwargs):
+        year = kwargs['year']
+        context = {
+            'filter_by_time': True,
+            'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
+                                                             added_date__year=year),
+            'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
+                                                                   , added_date__year=year).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                            added_date__year=year,
+                                                                            verified__exact='yes').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                              added_date__year=year,
+                                                                              verified__exact='no').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount': models.Expend.objects.filter(verified__exact='yes', added_date__date=year).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_verified': models.Expend.objects.filter(verified__exact='yes',
+                                                                       added_date__year=year).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_unverified': models.Expend.objects.filter(verified__exact='no', added_date__year=year
+                                                                         ).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+
+        }
+        return render(request, 'expend/expend_list.html', context=context)
+
+
+class ExpendListViewByMonth(ListView):
+
+    def get(self, request, *args, **kwargs):
+        year = kwargs['year']
+        month = kwargs['month']
+        context = {
+            'filter_by_time': True,
+            'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
+                                                             added_date__year=year, added_date__month=month),
+            'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
+                                                                   , added_date__year=year,
+                                                                   added_date__month=month).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                            added_date__year=year,
+                                                                            added_date__month=month,
+                                                                            verified__exact='yes').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=self.request.user.username,
+                                                                              added_date__year=year,
+                                                                              added_date__month=month,
+                                                                              verified__exact='no').aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount': models.Expend.objects.filter(verified__exact='yes', added_date__year=year,
+                                                              added_date__month=month).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_verified': models.Expend.objects.filter(verified__exact='yes',
+                                                                       added_date__year=year,
+                                                                       added_date__month=month).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+            'sum_expend_amount_unverified': models.Expend.objects.filter(verified__exact='no', added_date__year=year,
+                                                                         added_date__month=month).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00),
+        }
+        return render(request, 'expend/expend_list.html', context=context)
 
 
 class ExpendDetailView(DetailView):
