@@ -82,7 +82,7 @@ class ExpendListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['expend_list_user'] = models.Expend.objects.filter(
-            by_user__exact=self.request.user.username).order_by('added_date')
+            by_user__exact=self.request.user.username).order_by('-added_date')
         context['sum_user_expend_amount'] = models.Expend.objects.filter(
             by_user__exact=self.request.user.username).aggregate(
             Sum('expend_amount')).get('expend_amount__sum', 0.00)
@@ -107,8 +107,9 @@ class ExpendListViewByDate(ListView):
         date = kwargs['date']
         context = {
             'filter_by_time': date,
+            'filter_date': models.Expend.objects.filter(added_date__date=date).order_by('-added_date'),
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
-                                                             added_date__date=date),
+                                                             added_date__date=date).order_by('-added_date'),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
                                                                    , added_date__date=date).aggregate(
                 Sum('expend_amount')).get('expend_amount__sum', 0.00),
@@ -138,8 +139,9 @@ class ExpendListViewByToday(ListView):
     def get(self, request, *args, **kwargs):
         context = {
             'filter_by_time': timezone.localdate(),
+            'filter_date': models.Expend.objects.filter(added_date__date=today).order_by('-added_date'),
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
-                                                             added_date__date=today),
+                                                             added_date__date=today).order_by('-added_date'),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
                                                                    , added_date__date=today).aggregate(
                 Sum('expend_amount')).get('expend_amount__sum', 0.00),
@@ -170,8 +172,9 @@ class ExpendListViewByYear(ListView):
         year = kwargs['year']
         context = {
             'filter_by_time': year,
+            'filter_date': models.Expend.objects.filter(added_date__year=year).order_by('-added_date'),
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
-                                                             added_date__year=year),
+                                                             added_date__year=year).order_by('-added_date'),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
                                                                    , added_date__year=year).aggregate(
                 Sum('expend_amount')).get('expend_amount__sum', 0.00),
@@ -203,8 +206,11 @@ class ExpendListViewByMonth(ListView):
         month = kwargs['month']
         context = {
             'filter_by_time': get_month_name(num_of_month=month)+', '+year,
+            'filter_date': models.Expend.objects.filter(added_date__year=year,
+                                                        added_date__month=month).order_by('-added_date'),
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
-                                                             added_date__year=year, added_date__month=month),
+                                                             added_date__year=year,
+                                                             added_date__month=month).order_by('-added_date'),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
                                                                    , added_date__year=year,
                                                                    added_date__month=month).aggregate(
