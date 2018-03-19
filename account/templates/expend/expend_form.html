@@ -6,33 +6,25 @@
 {% load bootstrap4 %}
 <div class="container-fluid">
         <form method="post">
-            <div class="row justify-content-center">
-                <div class="col-md-11">
+            <div class="row">
+                <div class="col-md-4">
                     {% if form.instance.pk %}
-                    <h2 class="text-muted">Update Expend Record</h2><br><br>
+                    <h2 class="text-muted">Update Expend Record</h2><br>
                     {% else %}
-                    <h2 class="text-muted">Add Expend Record</h2><br><br>
+                    <h2 class="text-muted">Add Expend Record</h2><br>
                     {% endif %}
                     {% csrf_token %}
-                    {% for field in form %}
-                        <b>{{ field.errors }}</b>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label"><b>{{ field.label_tag }}</b></label>
-                            <div class="col-sm-10">
-                              {{ field }}
-                            </div>
-                        </div><hr>
-                    {% endfor %}
-                    <div class="alert alert-secondary text-right">
-                       {% if form.instance.pk %}
-                        <input type="submit" class="btn btn-md btn-outline-primary" value="Update Record">
-                        {% else %}
-                        <input type="submit" class="btn btn-md btn-outline-primary" value="Save Record">
-                        {% endif %}
-                        <a type="submit" class="btn btn-md btn-outline-info" href="{% url 'account:expend' %}">Back to List</a>
-                    </div>
+                    {% bootstrap_form form %}
                 </div>
             </div>
+            <div class="alert alert-secondary">
+               {% if form.instance.pk %}
+                <input type="submit" class="btn btn-md btn-outline-primary" value="Update Record">
+                {% else %}
+                <input type="submit" class="btn btn-md btn-outline-primary" value="Save Record">
+                {% endif %}
+                <a type="submit" class="btn btn-md btn-outline-info" href="{% url 'account:expend' %}">Back to List</a>
+             </div>
         </form>
 </div>
 {% endblock %}
