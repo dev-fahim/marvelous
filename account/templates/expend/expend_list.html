@@ -9,7 +9,7 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-11">
+        <div class="col-md-12">
             <h2 class="text-muted">Expenditure List of <mark>{{ filter_by_time }}</mark> <small class="d-print-none"><i>based on your account</i></small></h2>
             <div class="text-right">
                 <a type="submit" class="btn btn-md btn-outline-info d-print-none" href="{% url 'account:expend' %}">Full Expenditure List</a>
@@ -91,12 +91,12 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-11">
+        <div class="col-md-12">
             <h2 class="text-muted">Expenditure List <small class="d-print-none"><i>based on your account</i></small></h2>
             <div class="text-right">
-                <a type="submit" class="btn btn-md btn-outline-warning d-print-none" href="{% url 'account:expend_by_today' %}">Today Expenditure List</a>
-                <a type="submit" class="btn btn-md btn-outline-warning d-print-none" href="{% url 'account:expend_by_month' year=current_year month=current_month %}">This Month Expenditure List</a>
-                <a type="submit" class="btn btn-md btn-outline-warning d-print-none" href="{% url 'account:expend_by_year' year=current_year %}">This Year Expenditure List</a>
+                <a type="submit" class="btn btn-md btn-outline-dark d-print-none" href="{% url 'account:expend_by_today' %}">Today Expenditure List</a>
+                <a type="submit" class="btn btn-md btn-outline-dark d-print-none" href="{% url 'account:expend_by_month' year=current_year month=current_month %}">This Month Expenditure List</a>
+                <a type="submit" class="btn btn-md btn-outline-dark d-print-none" href="{% url 'account:expend_by_year' year=current_year %}">This Year Expenditure List</a>
                 <a type="submit" class="btn btn-md btn-outline-primary d-print-none" href="{% url 'account:expend_create' %}">Add Expend</a>
             </div><br>
             <div class="alert alert-secondary">
@@ -146,8 +146,8 @@
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
                         <td class="d-print-none"><a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Delete</a></td>
-                        <th>{% if expend.verified == 'no' %}<i class="fas fa-times" style="font-size:1.2em; color:#c91218"></i> <span class="badge badge-danger">Not Verified</span>
-                            {% else %}<i class="fas fa-calendar-check" style="font-size:1.2em; color:#13c44b"></i> <span class="badge badge-success">Verified</span>{% endif %}</th>
+                        <th>{% if expend.verified == 'no' %}<h4><i class="fas fa-times d-print-none" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h4>
+                            {% else %}<h4><i class="fas fa-calendar-check d-print-none" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h4>{% endif %}</th>
                     </tr>
                 {% endfor %}
                 {% else %}
@@ -158,8 +158,8 @@
                         <td>{{ expend.expend_in|title }}</td>
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
-                        <th>{% if expend.verified == 'no' %}<i class="fas fa-times" style="font-size:1.2em; color:#c91218"></i> <span class="badge badge-danger">Not Verified</span>
-                            {% else %}<i class="fas fa-calendar-check" style="font-size:1.2em; color:#13c44b"></i> <span class="badge badge-success">Verified</span>{% endif %}</th>
+                        <th>{% if expend.verified == 'no' %}<h4><i class="fas fa-times d-print-none" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h4>
+                            {% else %}<h4><i class="fas fa-calendar-check d-print-none" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h4>{% endif %}</th>
                     </tr>
                 {% endfor %}
                 {% endif %}
