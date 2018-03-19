@@ -9,6 +9,7 @@ from . import forms
 from . import models
 from django.db.models import Sum
 from django.utils import timezone
+from .helpers import get_month_name
 
 # Create your views here.
 today = timezone.localdate()
@@ -105,7 +106,7 @@ class ExpendListViewByDate(ListView):
     def get(self, request, *args, **kwargs):
         date = kwargs['date']
         context = {
-            'filter_by_time': True,
+            'filter_by_time': date,
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
                                                              added_date__date=date),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
@@ -136,7 +137,7 @@ class ExpendListViewByToday(ListView):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'filter_by_time': True,
+            'filter_by_time': timezone.localdate(),
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
                                                              added_date__date=today),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
@@ -168,7 +169,7 @@ class ExpendListViewByYear(ListView):
     def get(self, request, *args, **kwargs):
         year = kwargs['year']
         context = {
-            'filter_by_time': True,
+            'filter_by_time': year,
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
                                                              added_date__year=year),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
@@ -182,7 +183,7 @@ class ExpendListViewByYear(ListView):
                                                                               added_date__year=year,
                                                                               verified__exact='no').aggregate(
                 Sum('expend_amount')).get('expend_amount__sum', 0.00),
-            'sum_expend_amount': models.Expend.objects.filter(verified__exact='yes', added_date__date=year).aggregate(
+            'sum_expend_amount': models.Expend.objects.filter(verified__exact='yes', added_date__year=year).aggregate(
                 Sum('expend_amount')).get('expend_amount__sum', 0.00),
             'sum_expend_amount_verified': models.Expend.objects.filter(verified__exact='yes',
                                                                        added_date__year=year).aggregate(
@@ -201,7 +202,7 @@ class ExpendListViewByMonth(ListView):
         year = kwargs['year']
         month = kwargs['month']
         context = {
-            'filter_by_time': True,
+            'filter_by_time': get_month_name(num_of_month=month)+', '+year,
             'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username,
                                                              added_date__year=year, added_date__month=month),
             'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=self.request.user.username
