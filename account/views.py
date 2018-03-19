@@ -82,8 +82,10 @@ class ExpendListView(ListView):
         context['expend_list_user'] = models.Expend.objects.filter(by_user__exact=self.request.user.username).order_by('added_date')
         context['sum_user_expend_amount'] = models.Expend.objects.filter(by_user__exact=self.request.user.username).aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
         context['sum_user_expend_amount_verified'] = models.Expend.objects.filter(by_user__exact=self.request.user.username, verified__exact='yes').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_user_expend_amount_unverified'] = models.Expend.objects.filter(by_user__exact=self.request.user.username, verified__exact='no').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
         context['sum_expend_amount'] = models.Expend.objects.aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
         context['sum_expend_amount_verified'] = models.Expend.objects.filter(verified__exact='yes').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        context['sum_expend_amount_unverified'] = models.Expend.objects.filter(verified__exact='no').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
         return context
 
 
