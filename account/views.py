@@ -9,9 +9,9 @@ from . import forms
 from . import models
 from django.db.models import Sum
 from django.utils import timezone
-today = timezone.localdate()
 
 # Create your views here.
+today = timezone.localdate()
 
 
 class Login(LoginView):
@@ -264,5 +264,3 @@ def create_expend(request):
     else:
         expend_form = forms.ExpendCreateForm
     return render(request, 'expend/expend_form.html', {'form': expend_form})
-
-
