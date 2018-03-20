@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Expenditure Delete{% endblock %}
 {% block content %}<div class="container">
-{% if request.user.is_superuser %}
+{% if request.user.is_authenticated and request.user.is_superuser %}
 
     <h2 class="text-muted">
         Are you sure <small>DELETE {{ expend.expend_in }}</small>
@@ -17,8 +17,8 @@
         <div class="col-md-8">
             <div class="alert alert-danger" role="alert">
           <h4 class="alert-heading">Access Denied</h4>
-          <p>You have no <mark>PERMISSION</mark> to Delete other's EXPEND RECORD.</p>
-          <hr>
+                <hr>
+          <p>You have no <mark>PERMISSION</mark> to DELETE EXPENDITURE RECORD.</p>
           <a class="btn btn-lg btn-outline-danger" href="{% url 'account:expend' %}">Go bake to your Expend List</a>
         </div>
         </div>

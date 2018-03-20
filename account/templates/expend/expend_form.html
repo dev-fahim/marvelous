@@ -3,16 +3,47 @@
         Create Expenditure
 {% endblock %}
 {% block content %}
+{% if form.instance.pk %}
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+    {% load bootstrap4 %}
+    <div class="container-fluid">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="text-muted">Update Expend Record</h2><br>
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                    </div>
+                </div>
+                <div class="alert alert-secondary">
+                   {% if form.instance.pk %}
+                    <input type="submit" class="btn btn-md btn-outline-primary" value="Update Record">
+                    {% else %}
+                    <input type="submit" class="btn btn-md btn-outline-primary" value="Save Record">
+                    {% endif %}
+                    <a type="submit" class="btn btn-md btn-outline-info" href="{% url 'account:expend' %}">Back to List</a>
+                 </div>
+            </form>
+    </div>
+    {% else %}
+    <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="alert alert-danger" role="alert">
+                  <h4 class="alert-heading">Access Denied</h4>
+                    <hr>
+                  <p>You have no <mark>PERMISSION</mark> to UPDATE EXPENDITURE.</p>
+                  <a class="btn btn-lg btn-outline-danger" href="{% url 'account:expend' %}">Go bake to your Expend List</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% else %}
 {% load bootstrap4 %}
 <div class="container-fluid">
         <form method="post">
             <div class="row">
                 <div class="col-md-4">
-                    {% if form.instance.pk %}
-                    <h2 class="text-muted">Update Expend Record</h2><br>
-                    {% else %}
                     <h2 class="text-muted">Add Expend Record</h2><br>
-                    {% endif %}
                     {% csrf_token %}
                     {% bootstrap_form form %}
                 </div>
@@ -27,4 +58,5 @@
              </div>
         </form>
 </div>
+{% endif %}
 {% endblock %}

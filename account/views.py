@@ -271,3 +271,7 @@ def create_expend(request):
     else:
         expend_form = forms.ExpendCreateForm
     return render(request, 'expend/expend_form.html', {'form': expend_form})
+
+
+def expenditure_filter_list_view(request):
+    pass
