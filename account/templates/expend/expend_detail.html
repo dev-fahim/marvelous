@@ -42,24 +42,13 @@
     </div>
         {% if request.user.is_authenticated and request.user.is_superuser %}
             <div class="alert alert-secondary d-print-none">
-                <a class="btn btn-md btn-outline-success" href="{% url 'account:expend_update' pk=expend.pk %}">Update Record</a>
-                <a class="btn btn-md btn-outline-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Remove Record</a>
-                <a class="btn btn-md btn-outline-primary" href="{% url 'account:expend' %}">Go bake to your Expend List</a>
+                <a class="btn btn-sm btn-success" href="{% url 'account:expend_update' pk=expend.pk %}">Update Record</a>
+                <a class="btn btn-sm btn-danger" href="{% url 'account:expend_delete' pk=expend.pk %}">Remove Record</a>
+                <a class="btn btn-sm btn-primary" href="{% url 'account:expend' %}">Go bake to your Expend List</a>
             </div>
 </div>
         {% endif %}
     {% else %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="alert alert-danger" role="alert">
-              <h4 class="alert-heading">Access Denied</h4>
-                <hr>
-              <p>You have no <mark>PERMISSION</mark> to see other's EXPENDITURE DETAIL.</p>
-              <a class="btn btn-lg btn-outline-danger" href="{% url 'account:expend' %}">Go bake to your Expend List</a>
-            </div>
-        </div>
-    </div>
-</div>
+        {% include 'access_denied.html' %}
     {% endif %}
 {% endblock %}

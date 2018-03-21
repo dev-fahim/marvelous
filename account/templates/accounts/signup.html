@@ -2,7 +2,6 @@
 {% block title %}
 Create another account
 {% endblock %}
-{% load bootstrap4 %}
 {% block header %}
 {% endblock %}
 {% block content %}
@@ -15,7 +14,7 @@ Create another account
               <h3 class="card-title">Sign up</h3>
                 <form method="post">
                     {% csrf_token %}
-                    {% bootstrap_form user_form %}
+                    {% include "form.html" %}
                     <input type="submit" class="btn btn-lg btn-outline-primary btn-block" value="Create an account" />
                 </form>
             </div>
