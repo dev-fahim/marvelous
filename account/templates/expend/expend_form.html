@@ -1,33 +1,35 @@
 {% extends 'base.html' %}
 {% block title %}
-        Create Expenditure
+        {% if form.instance.pk %}Update{% else %}Create{% endif %} Expenditure
 {% endblock %}
 {% block content %}
-    {% if request.user.is_authenticated and request.user.is_superuser %}
-    <div class="container-fluid">
-            <form method="post">
-                <div class="row">
-                    <div class="col-md-4">
-                        {% if form.instance.pk %}
-                        <h2 class="text-muted">Update Expend Record</h2><br>
-                        {% else %}
-                        <h2 class="text-muted">Add Expend Record</h2><br>
-                        {% endif %}
-                        {% csrf_token %}
-                        {% include "form.html" %}
-                    </div>
-                </div>
-                <div class="alert alert-secondary">
-                   {% if form.instance.pk %}
-                    <input type="submit" class="btn btn-md btn-primary" value="Update Record">
-                    {% else %}
-                    <input type="submit" class="btn btn-md btn-primary" value="Save Record">
-                    {% endif %}
-                    <a type="submit" class="btn btn-md btn-info" href="{% url 'account:expend' %}">Back to List</a>
-                 </div>
-            </form>
-    </div>
+{% if request.user.is_authenticated %}
+    {% if request.user.is_superuser %}
+        <div class="container">
+            <h3 class="text-muted">{% if form.instance.pk %}Update{% else %}Add{% endif %} Expenditure</h3><br>
+            <div class="row">
+                <form method="post">
+                    {% csrf_token %}
+                    {% include 'form.html' %}
+                    <button class="btn btn-sm btn-success">{% if form.instance.pk %}Update{% else %}Add{% endif %}</button>
+                </form>
+            </div>
+        </div>
     {% else %}
-    {% include 'access_denied.html' %}
+        {% if form.instance.pk %}
+            {% include 'access_denied.html' %}
+        {% else %}
+            <div class="container">
+                <h3 class="text-muted">Add Expenditure</h3><br>
+                <div class="row">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% include 'form.html' %}
+                        <button class="btn btn-sm btn-success">Add</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
     {% endif %}
+{% endif %}
 {% endblock %}
