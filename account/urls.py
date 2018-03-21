@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from . import views
 
 app_name = 'account'
 
 urlpatterns = [
+    # API VIEWS
+    path('api/', include('account.api.urls', namespace='api')),
     # this are for USER ACCOUNTS
     path('', login_required(views.HomeView.as_view()), name='home'),
     path('login/', views.Login.as_view(), name="login"),
