@@ -25,7 +25,8 @@ pytz = "*"
 style = "*"
 update = "*"
 whitenoise = "*"
-
+djangorestframework = "*"
+djangorestframework-jwt = "*"
 
 [dev-packages]
 
