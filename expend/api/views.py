@@ -1,5 +1,5 @@
 from rest_framework import generics, mixins
-from account.models import Expend
+from expend.models import Expend
 from . serializers import ExpendSerializer
 from django.db.models import Q
 

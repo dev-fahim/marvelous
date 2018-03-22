@@ -24,7 +24,7 @@
                 {% if request.user.is_authenticated %}
 
                     <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:expend' %}"><i class="far fa-money-bill-alt"></i> Expenditure</a></b>
+                        <b><a class="nav-link" href="{% url 'expenditure:expend' %}"><i class="far fa-money-bill-alt"></i> Expenditure</a></b>
                     </li>
                     <li class="nav-item">
                         <b><a class="nav-link" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></b>

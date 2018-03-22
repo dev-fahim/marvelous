@@ -23,8 +23,10 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
+    path('api/', include('expend.api.urls', namespace='api')),
     path('admin/', admin.site.urls, name="admins"),
     path('', login_required(HomeView.as_view())),
+    path('expenditure/', include('expend.urls', namespace='expenditure')),
     path('accounts/', include('account.urls', namespace='accounts')),
     path('accounts/profile/password/', auth_views.PasswordChangeView.as_view(template_name='accounts/password_change.html'),name='password_change'),
     path('accounts/profile/password/done/', auth_views.PasswordChangeDoneView.as_view(template_name='accounts/password_change_done.html'),name='password_change_done'),

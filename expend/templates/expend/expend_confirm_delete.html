@@ -9,7 +9,7 @@
     <form method="post" action="">
         {% csrf_token %}
         <input type="submit" class="btn btn-lg btn-danger" value="Delete"> If no,
-        <a class="btn btn-lg btn-info" href="{% url 'account:expend' %}">Cancel action.</a>
+        <a class="btn btn-lg btn-info" href="{% url 'expenditure:expend' %}">Cancel action.</a>
     </form>
 
 {% else %}

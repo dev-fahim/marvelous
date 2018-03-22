@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from account.models import Expend
+from expend.models import Expend
 
 
 class ExpendSerializer(serializers.ModelSerializer):
