@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}
+    Search Result
+{% endblock %}
+{% block content %}
+<div class="container">
+    <ul style="list-style:none;">
+    {% for result in search_result_list %}
+        <li>
+            <div class="alert alert-light" style="background:#f1f1f1; border-radius:10px;">
+                <h4 class="alert-heading"><a href="{{ result.get_absolute_url }}">{{ result.expend_in|title }}</a></h4>
+                <b class="text-muted">{{ result.added_date }}</b> {{ result.added_date|timesince }}<hr>
+                <b>Expend Amount: {{ result.expend_amount }} Taka.</b>
+                <p>{{ result.description|safe }}</p>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

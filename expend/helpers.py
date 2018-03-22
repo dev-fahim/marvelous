@@ -26,3 +26,19 @@ def get_month_name(num_of_month):
     else:
         name = num_of_month
     return name
+
+
+def search(request):
+    query = request.GET.get("search")
+    if query:
+        result = models.Expend.objects.filter(
+            Q(source_fund__icontains=query) |
+            Q(source_amount__icontains=query) |
+            Q(expend_in__icontains=query) |
+            Q(expend_amount__icontains=query) |
+            Q(description__icontains=query) |
+            Q(added_date__icontains=query)
+                )
+        return render(request, 'expend/search_result.html', context={'search_result_list': result})
+
+    return HttpResponseRedirect(reverse('expenditure:expend'))

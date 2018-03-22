@@ -8,46 +8,57 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
-        .btn{margin:2px;}
+        .btn-mar{margin:2px;border-radius:2px;}
+        .form-control{border-radius:0px;}
     </style>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'account:home' %}"><b>Manager Application 1.1</b></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav mr-auto">
-                {% if request.user.is_authenticated %}
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'account:home' %}"><b>Manager Application 1.9</b></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    {% if request.user.is_authenticated %}
 
-                    <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'expenditure:expend' %}"><i class="far fa-money-bill-alt"></i> Expenditure</a></b>
-                    </li>
-                    <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></b>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a  class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><b><i class="fas fa-user"></i> {{ request.user.username|title }}<b></a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{% url 'account:profile' %}"><b><i class="fas fa-id-badge"></i> My Profile</b></a>
-                            <a class="dropdown-item" href="{% url 'password_change' %}"><b><i class="fas fa-key"></i> Change Password</b></a>
-                            <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b><i class="fas fa-sync"></i> Update</b></a>
-                        </div>
-                    </li>
-                    {% if request.user.is_authenticated and request.user.is_superuser %}
                         <li class="nav-item">
-                            <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create an account</a></b>
+                            <b><a class="nav-link" href="{% url 'expenditure:expend' %}"><i class="far fa-money-bill-alt"></i> Expenditure</a></b>
+                        </li>
+                        <li class="nav-item">
+                            <b><a class="nav-link" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></b>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a  class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><b><i class="fas fa-user"></i> {{ request.user.username|title }}<b></a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{% url 'account:profile' %}"><b><i class="fas fa-id-badge"></i> My Profile</b></a>
+                                <a class="dropdown-item" href="{% url 'password_change' %}"><b><i class="fas fa-key"></i> Change Password</b></a>
+                                <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b><i class="fas fa-sync"></i> Update</b></a>
+                            </div>
+                        </li>
+                        {% if request.user.is_authenticated and request.user.is_superuser %}
+                            <li class="nav-item">
+                                <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create an account</a></b>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="nav-item">
+                            <b><a class="nav-link" href="{% url 'account:login' %}">Login</a></b>
                         </li>
                     {% endif %}
-                {% else %}
-                    <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:login' %}">Login</a></b>
-                    </li>
-                {% endif %}
-            </ul>
+                </ul>
+                <form method="get" class="form-inline" action="{% url 'expenditure:search' %}">
+                    <div class="input-group">
+                      <input type="text" class="form-control" name="search" value="{{ query_string }}">
+                      <div class="input-group-append">
+                        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                      </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </nav>
 

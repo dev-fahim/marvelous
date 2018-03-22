@@ -8,8 +8,8 @@
     </h2>
     <form method="post" action="">
         {% csrf_token %}
-        <input type="submit" class="btn btn-lg btn-danger" value="Delete"> If no,
-        <a class="btn btn-lg btn-info" href="{% url 'expenditure:expend' %}">Cancel action.</a>
+        <input type="submit" class="btn btn-md btn-danger" value="Delete">
+        <a class="btn btn-md btn-info" href="{% url 'expenditure:expend_detail' pk=expend.id %}">No, take me bake</a>
     </form>
 
 {% else %}

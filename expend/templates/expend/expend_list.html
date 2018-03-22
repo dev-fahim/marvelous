@@ -7,7 +7,7 @@
 {% now "m" as current_month %}
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-9">
             <h2 class="text-muted">Expenditure List {% if filter_by_time %}<small><mark>{{ filter_by_time }}</mark></small>{% endif %} <small class="d-print-none"><i>based on your account</i></small></h2>
             <br>
             <div class="row">
@@ -22,15 +22,15 @@
                 </div>
                 {% endif %}
                 <div class="col-md-8 ml-auto text-right">
-                    <a type="submit" class="btn btn-sm btn-info d-print-none" href="{% url 'expenditure:expend' %}">Full Expenditure List</a>
-                    <a type="submit" class="btn btn-sm btn-info d-print-none" href="{% url 'expenditure:expend_by_today' %}">Today Expenditure List</a>
-                    <a type="submit" class="btn btn-sm btn-info d-print-none" href="{% url 'expenditure:expend_by_month' year=current_year month=current_month %}">This Month Expenditure List</a>
-                    <a type="submit" class="btn btn-sm btn-info d-print-none" href="{% url 'expenditure:expend_by_year' year=current_year %}">This Year Expenditure List</a>
-                    <a type="submit" class="btn btn-sm btn-dark d-print-none" href="{% url 'expenditure:expend_filter_date' %}">Filter By Date</a>
-                    <a type="submit" class="btn btn-sm btn-dark d-print-none" href="{% url 'expenditure:expend_filter_year' %}">Filter By Year</a>
-                    <a type="submit" class="btn btn-sm btn-dark d-print-none" href="{% url 'expenditure:expend_filter_month' %}">Filter By Month</a>
-                    <a type="submit" class="btn btn-sm btn-dark d-print-none" href="{% url 'expenditure:expend_filter_range' %}">Filter By Date Range</a>
-                    <a type="submit" class="btn btn-sm btn-primary d-print-none" href="{% url 'expenditure:expend_create' %}">Add Expend</a>
+                    <a type="submit" class="btn btn-sm btn-info d-print-none btn-mar" href="{% url 'expenditure:expend' %}">Full Expenditure List</a>
+                    <a type="submit" class="btn btn-sm btn-info d-print-none btn-mar" href="{% url 'expenditure:expend_by_today' %}">Today Expenditure List</a>
+                    <a type="submit" class="btn btn-sm btn-info d-print-none btn-mar" href="{% url 'expenditure:expend_by_month' year=current_year month=current_month %}">This Month Expenditure List</a>
+                    <a type="submit" class="btn btn-sm btn-info d-print-none btn-mar" href="{% url 'expenditure:expend_by_year' year=current_year %}">This Year Expenditure List</a>
+                    <a type="submit" class="btn btn-sm btn-dark d-print-none btn-mar" href="{% url 'expenditure:expend_filter_date' %}">Filter By Date</a>
+                    <a type="submit" class="btn btn-sm btn-dark d-print-none btn-mar" href="{% url 'expenditure:expend_filter_year' %}">Filter By Year</a>
+                    <a type="submit" class="btn btn-sm btn-dark d-print-none btn-mar" href="{% url 'expenditure:expend_filter_month' %}">Filter By Month</a>
+                    <a type="submit" class="btn btn-sm btn-dark d-print-none btn-mar" href="{% url 'expenditure:expend_filter_range' %}">Filter By Date Range</a>
+                    <a type="submit" class="btn btn-sm btn-primary d-print-none btn-mar" href="{% url 'expenditure:expend_create' %}">Add Expend</a>
                 </div>
             </div>
             <br>
@@ -48,7 +48,7 @@
                         your unverified amount: <mark>{{ sum_user_expend_amount_unverified }}</mark> Taka.</b></i>
                 {% endif %}
             </div>
-            <table class="table table-striped table-hover table-responsive-xl table-responsive-lg table-responsive-md table-responsive-sm table-bordered text-center">
+            <table class="table table-striped table-hover table-responsive-xl table-responsive-lg table-responsive-md table-responsive-sm table-bordered table-sm text-center">
                 {% if request.user.is_authenticated and request.user.is_superuser %}
                 <thead class="thead-dark">
                     <tr>
@@ -81,9 +81,9 @@
                         <td>{{ expend.expend_in|title }}</td>
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
-                        <td class="d-print-none"><a class="btn btn-md btn-outline-danger" href="{% url 'expenditure:expend_delete' pk=expend.pk %}">Delete</a></td>
-                        <th>{% if expend.verified == 'no' %}<h4><i class="fas fa-times d-print-none" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h4>
-                            {% else %}<h4><i class="fas fa-calendar-check d-print-none" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h4>{% endif %}</th>
+                        <td class="d-print-none"><a class="btn btn-sm btn-outline-danger" href="{% url 'expenditure:expend_delete' pk=expend.pk %}">Delete</a></td>
+                        <th>{% if expend.verified == 'no' %}<h5><i class="fas fa-times d-print-none" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h5>
+                            {% else %}<h5><i class="fas fa-calendar-check d-print-none" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h5>{% endif %}</th>
                     </tr>
                 {% endfor %}
                 {% else %}
@@ -94,8 +94,8 @@
                         <td>{{ expend.expend_in|title }}</td>
                         <td>{{ expend.expend_amount }}</td>
                         <td>{{ expend.added_date }}</td>
-                        <th>{% if expend.verified == 'no' %}<h4><i class="fas fa-times d-print-none" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h4>
-                            {% else %}<h4><i class="fas fa-calendar-check d-print-none" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h4>{% endif %}</th>
+                        <th>{% if expend.verified == 'no' %}<h5><i class="fas fa-times d-print-none" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h5>
+                            {% else %}<h5><i class="fas fa-calendar-check d-print-none" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h5>{% endif %}</th>
                     </tr>
                 {% endfor %}
                 {% endif %}

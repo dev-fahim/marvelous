@@ -7,6 +7,8 @@ from . import models
 from django.db.models import Sum
 from django.utils import timezone
 from .helpers import get_month_name
+from django.db.models import Q
+import re
 today = timezone.localdate()
 # Create your views here.
 
@@ -316,3 +318,42 @@ def expenditure_filter_list_by_range_view(request):
     else:
         filter_form = forms.ExpendFilterRangeForm
     return render(request, 'expend/expend_list.html', context={'form': filter_form})
+
+
+def normalize_query(query_string,
+                    findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
+                    normspace=re.compile(r'\s{2,}').sub):
+    print([normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)])
+
+    return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
+
+
+def get_query(query_string, search_fields):
+    query = None
+    terms = normalize_query(query_string)
+    for term in terms:
+        or_query = None
+        for field_name in search_fields:
+            q = Q(**{"%s__icontains" % field_name: term})
+            if or_query is None:
+                or_query = q
+            else:
+                or_query = or_query | q
+        if query is None:
+            query = or_query
+        else:
+            query = query or or_query
+    return query
+
+
+def search(request):
+    if ('search' in request.GET) and request.GET['search'].strip():
+        query_string = request.GET['search']
+
+        entry_query = get_query(query_string, ['source_fund', 'source_amount', 'expend_in', 'expend_amount', 'description', 'added_date'])
+        if request.user.is_superuser:
+            found_entries = models.Expend.objects.filter(entry_query).order_by('-added_date')
+        else:
+            found_entries = models.Expend.objects.filter(entry_query, by_user__exact=request.user.username).order_by('-added_date')
+        return render(request, 'expend/search_result.html', {'query_string': query_string, 'search_result_list': found_entries})
+    return HttpResponseRedirect(reverse('expenditure:expend'))
