@@ -27,6 +27,7 @@ update = "*"
 whitenoise = "*"
 djangorestframework = "*"
 djangorestframework-jwt = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

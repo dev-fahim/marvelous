@@ -348,7 +348,7 @@ def get_query(query_string, search_fields):
 
 def search(request):
     if ('search' in request.GET) and request.GET['search'].strip():
-        query_string = request.GET['search']
+        query_string = request.GET.get('search')
 
         entry_query = get_query(query_string, ['source_fund', 'source_amount', 'expend_in', 'expend_amount', 'description', 'added_date'])
         if request.user.is_superuser:
