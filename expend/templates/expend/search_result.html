@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
         <div class="card-body custom-card">
-            <small class="text-muted">{{ search_result_list.count }} results</small>
+            <small class="text-muted">{{ search_result_list.count }} results in {{ time }} seconds</small>
     {% for result in search_result_list %}
             <div class="alert alert-light" style="background:#f1f1f1; border-radius:10px;">
                 <h4 class="alert-heading"><a href="{{ result.get_absolute_url }}">{{ result.expend_in|title }}</a></h4>
