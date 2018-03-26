@@ -6,6 +6,7 @@ from . import forms
 from . import models
 from django.db.models import Sum
 from django.utils import timezone
+import time
 from .helpers import get_month_name
 from django.db.models import Q
 import re
@@ -347,6 +348,7 @@ def get_query(query_string, search_fields):
 
 
 def search(request):
+    start = time.time()
     if ('search' in request.GET) and request.GET['search'].strip():
         query_string = request.GET.get('search')
 
@@ -355,5 +357,8 @@ def search(request):
             found_entries = models.Expend.objects.filter(entry_query).order_by('-added_date')
         else:
             found_entries = models.Expend.objects.filter(entry_query, by_user__exact=request.user.username).order_by('-added_date')
-        return render(request, 'expend/search_result.html', {'query_string': query_string, 'search_result_list': found_entries})
+        end = time.time()
+        spent = end - start
+        spent_time = format(spent, '.6f')
+        return render(request, 'expend/search_result.html', {'query_string': query_string, 'search_result_list': found_entries, 'time': spent_time})
     return HttpResponseRedirect(reverse('expenditure:expend'))
