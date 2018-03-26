@@ -5,30 +5,30 @@
 {% block content %}
 {% if request.user.is_authenticated %}
     {% if request.user.is_superuser %}
-        <div class="container">
-            <h3 class="text-muted">{% if form.instance.pk %}Update{% else %}Add{% endif %} Expenditure</h3><br>
-            <div class="row">
-                <form method="post">
+            <h5 class="card-header">{% if form.instance.pk %}Update{% else %}Add{% endif %} Expenditure</h5><br>
+            <form method="post">
+                <div class="card-body custom-card">
                     {% csrf_token %}
                     {% include 'form.html' %}
-                    <button class="btn btn-sm btn-success">{% if form.instance.pk %}Update{% else %}Add{% endif %}</button>
-                </form>
-            </div>
-        </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-md btn-success">{% if form.instance.pk %}Update Record{% else %}Add Record{% endif %}</button>
+                </div>
+            </form>
     {% else %}
         {% if form.instance.pk %}
             {% include 'access_denied.html' %}
         {% else %}
-            <div class="container">
-                <h3 class="text-muted">Add Expenditure</h3><br>
-                <div class="row">
-                    <form method="post">
+                <h5 class="card-header">Add Expenditure</h5><br>
+                <form method="post">
+                    <div class="card-body custom-card">
                         {% csrf_token %}
                         {% include 'form.html' %}
-                        <button class="btn btn-sm btn-success">Add</button>
-                    </form>
-                </div>
-            </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-md btn-success">Add Record</button>
+                    </div>
+                </form>
         {% endif %}
     {% endif %}
 {% endif %}
