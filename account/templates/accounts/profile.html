@@ -1,13 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Profile {{ request.user.user_profile.slug }}{% endblock %}
 {% block header %}<br>
-<div class="container">
     <div class="alert alert-primary text-center">
         <i><h3>Hello {{ request.user.first_name }} ---- Last logged in: {{ request.user.last_login|timesince }} ago</h3></i>
     </div>
-    <div class="row">
-
-    </div>
-</div>
 {% endblock %}
 

@@ -9,66 +9,72 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .btn-mar{margin:2px;border-radius:2px;}
-        .form-control{border-radius:0px;}
+        .form-control-custom{}
+        .custom-card{
+            max-height:750px;
+            overflow-y:scroll;
+        }
     </style>
 </head>
 
 <body>
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'account:home' %}"><b>Manager Application 1.9</b></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav mr-auto">
-                    {% if request.user.is_authenticated %}
-
+        <a class="navbar-brand" href="{% url 'account:home' %}"><b>Manager Application 1.9</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <b><a class="nav-link" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></b>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a  class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><b><i class="fas fa-user"></i> {{ request.user.username|title }}<b></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'account:profile' %}"><b><i class="fas fa-id-badge"></i> My Profile</b></a>
+                            <a class="dropdown-item" href="{% url 'password_change' %}"><b><i class="fas fa-key"></i> Change Password</b></a>
+                            <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b><i class="fas fa-sync"></i> Update</b></a>
+                        </div>
+                    </li>
+                    {% if request.user.is_authenticated and request.user.is_superuser %}
                         <li class="nav-item">
-                            <b><a class="nav-link" href="{% url 'expenditure:expend' %}"><i class="far fa-money-bill-alt"></i> Expenditure</a></b>
-                        </li>
-                        <li class="nav-item">
-                            <b><a class="nav-link" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></b>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a  class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><b><i class="fas fa-user"></i> {{ request.user.username|title }}<b></a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'account:profile' %}"><b><i class="fas fa-id-badge"></i> My Profile</b></a>
-                                <a class="dropdown-item" href="{% url 'password_change' %}"><b><i class="fas fa-key"></i> Change Password</b></a>
-                                <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b><i class="fas fa-sync"></i> Update</b></a>
-                            </div>
-                        </li>
-                        {% if request.user.is_authenticated and request.user.is_superuser %}
-                            <li class="nav-item">
-                                <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create an account</a></b>
-                            </li>
-                        {% endif %}
-                    {% else %}
-                        <li class="nav-item">
-                            <b><a class="nav-link" href="{% url 'account:login' %}">Login</a></b>
+                            <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create an account</a></b>
                         </li>
                     {% endif %}
-                </ul>
-                <form method="get" class="form-inline" action="{% url 'expenditure:search' %}">
-                    <div class="input-group">
-                      <input type="text" class="form-control" name="search" value="{{ query_string }}">
-                      <div class="input-group-append">
-                        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
-                      </div>
-                    </div>
-                </form>
-            </div>
+                {% else %}
+                    <li class="nav-item">
+                        <b><a class="nav-link" href="{% url 'account:login' %}">Login</a></b>
+                    </li>
+                {% endif %}
+            </ul>
+            <form method="get" class="form-inline" action="{% url 'expenditure:search' %}">
+                <div class="input-group">
+                  <input type="text" class="form-control form-control-custom" name="search" value="{{ query_string }}">
+                  <div class="input-group-append">
+                    <button class="btn btn-light" type="submit"><i class="fas fa-search"></i></button>
+                  </div>
+                </div>
+            </form>
         </div>
     </nav>
 
 {% block header %}
 <br/>
 {% endblock %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+            {% include 'sidebar.html' %}
+        <div class="col-md-9">
+            <div class="card">
+                {% block content %}
 
-{% block content %}
-<br/>
-{% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
 
 {% block footer %}
 <br/>

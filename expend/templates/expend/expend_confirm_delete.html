@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}Expenditure Delete{% endblock %}
-{% block content %}<div class="container">
+{% block content %}
 {% if request.user.is_authenticated and request.user.is_superuser %}
 
-    <h2 class="text-muted">
-        Are you sure <small>DELETE {{ expend.expend_in }}</small>
-    </h2>
-    <form method="post" action="">
-        {% csrf_token %}
-        <input type="submit" class="btn btn-md btn-danger" value="Delete">
-        <a class="btn btn-md btn-info" href="{% url 'expenditure:expend_detail' pk=expend.id %}">No, take me bake</a>
-    </form>
+    <h5 class="card-header">
+        Are you sure <small>DELETE <mark>{{ expend.expend_in }}</mark></small>
+    </h5>
+    <div class="card-body">
+        <form method="post" action="">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-md btn-danger" value="Delete">
+            <a class="btn btn-md btn-info" href="{% url 'expenditure:expend_detail' pk=expend.id %}">No, take me bake</a>
+        </form
+    </div>
 
 {% else %}
     {% include 'access_denied.html' %}
-{% endif %}</div>
+{% endif %}
 {% endblock %}
