@@ -358,6 +358,7 @@ def search(request):
         else:
             found_entries = models.Expend.objects.filter(entry_query, by_user__exact=request.user.username).order_by('-added_date')
         end = time.time()
-        spend = end - start
-        return render(request, 'expend/search_result.html', {'query_string': query_string, 'search_result_list': found_entries, 'time': spend})
+        spent = end - start
+        spent_time = format(spent, '.6f')
+        return render(request, 'expend/search_result.html', {'query_string': query_string, 'search_result_list': found_entries, 'time': spent_time})
     return HttpResponseRedirect(reverse('expenditure:expend'))
