@@ -1,8 +1,25 @@
-<div class="col-md-2 d-print-none">
-    <div class="list-group">
-      <a href="#" class="list-group-item list-group-item-action active">
-        Sections
-      </a>
-      <a href="{% url 'expenditure:expend' %}" class="list-group-item list-group-item-action">Expenditure</a>
-    </div>
-</div>
+<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user">
+        <div>
+          <p class="app-sidebar__user-name">{{ request.user.username|title }}</p>
+          <p class="app-sidebar__user-designation">{{ request.user.email }}</p>
+        </div>
+      </div>
+      <ul class="app-menu">
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Expenditures</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+          	<li><a  class="treeview-item"  href="{% url 'expenditure:expend' %}"><i class="icon fa fa-circle-o"></i> Full Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_today' %}"><i class="icon fa fa-circle-o"></i> Today Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_month' year=current_year month=current_month %}"><i class="icon fa fa-circle-o"></i> This Month Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_year' year=current_year %}"><i class="icon fa fa-circle-o"></i> This Year Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_date' %}"><i class="icon fa fa-circle-o"></i> Filter By Date</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_year' %}"><i class="icon fa fa-circle-o"></i> Filter By Year</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_month' %}"><i class="icon fa fa-circle-o"></i> Filter By Month</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_range' %}"><i class="icon fa fa-circle-o"></i> Filter By Date Range</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_create' %}"><i class="icon fa fa-circle-o"></i> Add Expend</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_graph' year=current_year %}"><i class="icon fa fa-circle-o"></i> This Year Graph</a></li>
+          </ul>
+        </li>
+      </ul>
+    </aside>

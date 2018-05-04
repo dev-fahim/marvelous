@@ -2,16 +2,16 @@
 {% block title %}
         {% if form.instance.pk %}Update{% else %}Create{% endif %} Expenditure
 {% endblock %}
+{% block content_title %}{% if form.instance.pk %}Update{% else %}Add{% endif %} Expenditure{% endblock %}
 {% block content %}
 {% if request.user.is_authenticated %}
     {% if request.user.is_superuser %}
-            <h5 class="card-header">{% if form.instance.pk %}Update{% else %}Add{% endif %} Expenditure</h5><br>
             <form method="post">
-                <div class="card-body custom-card">
+                <div>
                     {% csrf_token %}
                     {% include 'form.html' %}
                 </div>
-                <div class="card-footer">
+                <div>
                     <button class="btn btn-md btn-success">{% if form.instance.pk %}Update Record{% else %}Add Record{% endif %}</button>
                 </div>
             </form>
@@ -19,13 +19,12 @@
         {% if form.instance.pk %}
             {% include 'access_denied.html' %}
         {% else %}
-                <h5 class="card-header">Add Expenditure</h5><br>
                 <form method="post">
                     <div class="card-body custom-card">
                         {% csrf_token %}
                         {% include 'form.html' %}
                     </div>
-                    <div class="card-footer">
+                    <div>
                         <button class="btn btn-md btn-success">Add Record</button>
                     </div>
                 </form>

@@ -2,16 +2,17 @@
 {% block title %}Expenditure Delete{% endblock %}
 {% block content %}
 {% if request.user.is_authenticated and request.user.is_superuser %}
-
-    <h5 class="card-header">
+{% block content_title %}Delete Data{% endblock %}
+{% block content_sub_title %}You can delete data from your database.{% endblock %}
+    <h5>
         Are you sure <small>DELETE <mark>{{ expend.expend_in }}</mark></small>
     </h5>
-    <div class="card-body">
+    <div>
         <form method="post" action="">
             {% csrf_token %}
             <input type="submit" class="btn btn-md btn-danger" value="Delete">
             <a class="btn btn-md btn-info" href="{% url 'expenditure:expend_detail' pk=expend.id %}">No, take me bake</a>
-        </form
+        </form>
     </div>
 
 {% else %}

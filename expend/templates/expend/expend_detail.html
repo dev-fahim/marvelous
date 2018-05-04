@@ -2,8 +2,9 @@
 {% block title %}Expenditure Detail{% endblock %}
 {% block content %}
     {% if request.user.is_authenticated and expend.by_user == request.user.username or request.user.is_superuser %}
-            <h5 class="card-header">Expenditure Detail <small class="d-print-none"><i>based on your account</i></small></h5><br>
-            <div class="card-body">
+{% block content_title %}Espenditure Details{% endblock %}
+{% block content_sub_title %}Based on your account.{% endblock %}            
+            <div>
                 <table class="table">
                     <tr>
                         <td><b>Expended By:</b></td>
@@ -38,7 +39,7 @@
                 </table>
             </div>
         {% if request.user.is_authenticated and request.user.is_superuser %}
-            <div class="card-footer d-print-none">
+            <div class="d-print-none">
                 <a class="btn btn-mar btn-sm btn-success" href="{% url 'expenditure:expend_update' pk=expend.pk %}">Update Record</a>
                 <a class="btn btn-mar btn-sm btn-danger" href="{% url 'expenditure:expend_delete' pk=expend.pk %}">Remove Record</a>
                 <a class="btn btn-mar btn-sm btn-primary" href="{% url 'expenditure:expend' %}">Go bake to your Expend List</a>

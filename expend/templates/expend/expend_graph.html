@@ -6,7 +6,7 @@
 {% now "Y" as current_year %}
 <canvas id="myChart"></canvas>
 {% endblock %}
-
+{% block content_title %}Expenditure Graph Summary of This Year{% endblock %}
 {% block jQuery %}
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {

@@ -7,9 +7,13 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'docs/css/main.css' %}">
+    <link rel="stylesheet" href="cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" >
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.bootstrap4.min.css" >
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.bootstrap4.min.css" >
+
     <style>
         .btn-mar{margin:2px;border-radius:2px;}
-        .form-control-custom{}
         .custom-card{
             max-height:750px;
             overflow-y:scroll;
@@ -18,73 +22,138 @@
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'account:home' %}"><b>Manager Application 1.9</b></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav mr-auto">
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></b>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a  class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><b><i class="fas fa-user"></i> {{ request.user.username|title }}<b></a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{% url 'account:profile' %}"><b><i class="fas fa-id-badge"></i> My Profile</b></a>
-                            <a class="dropdown-item" href="{% url 'password_change' %}"><b><i class="fas fa-key"></i> Change Password</b></a>
-                            <a class="dropdown-item" href="{% url 'account:update_profile' %}"><b><i class="fas fa-sync"></i> Update</b></a>
-                        </div>
-                    </li>
+<header class="app-header"><a class="app-header__logo" href="{% url 'account:home' %}">Manager Application</a>
+      <!-- Sidebar toggle button-->
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <li class="app-search">
+          <form method="get" action="{% url 'expenditure:search' %}" >
+            <input class="app-search__input" type="search" placeholder="Search" name="search" value="{{ query_string }}">
+            <button class="app-search__button"><i class="fa fa-search"></i></button>
+          </form>
+        </li>
+        <!--Notification Menu-->
+        <!--<li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>-->
+          <!--<ul class="app-notification dropdown-menu dropdown-menu-right">-->
+            <!--<li class="app-notification__title">You have 4 new notifications.</li>-->
+            <!--<div class="app-notification__content">-->
+              <!--<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>-->
+                  <!--<div>-->
+                    <!--<p class="app-notification__message">Lisa sent you a mail</p>-->
+                    <!--<p class="app-notification__meta">2 min ago</p>-->
+                  <!--</div></a></li>-->
+              <!--<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>-->
+                  <!--<div>-->
+                    <!--<p class="app-notification__message">Mail server not working</p>-->
+                    <!--<p class="app-notification__meta">5 min ago</p>-->
+                  <!--</div></a></li>-->
+              <!--<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>-->
+                  <!--<div>-->
+                    <!--<p class="app-notification__message">Transaction complete</p>-->
+                    <!--<p class="app-notification__meta">2 days ago</p>-->
+                  <!--</div></a></li>-->
+              <!--<div class="app-notification__content">-->
+                <!--<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>-->
+                    <!--<div>-->
+                      <!--<p class="app-notification__message">Lisa sent you a mail</p>-->
+                      <!--<p class="app-notification__meta">2 min ago</p>-->
+                    <!--</div></a></li>-->
+                <!--<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>-->
+                    <!--<div>-->
+                      <!--<p class="app-notification__message">Mail server not working</p>-->
+                      <!--<p class="app-notification__meta">5 min ago</p>-->
+                    <!--</div></a></li>-->
+                <!--<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>-->
+                    <!--<div>-->
+                      <!--<p class="app-notification__message">Transaction complete</p>-->
+                      <!--<p class="app-notification__meta">2 days ago</p>-->
+                    <!--</div></a></li>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<li class="app-notification__footer"><a href="#">See all notifications.</a></li>-->
+          <!--</ul>-->
+        <!--</li>-->
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            {% if request.user.is_authenticated %}
+                <li><a class="dropdown-item" href="{% url 'account:profile' %}">My Account</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:update_profile' %}">Edit Account</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a></li>
                     {% if request.user.is_authenticated and request.user.is_superuser %}
-                        <li class="nav-item">
-                            <b><a class="nav-link" href="{% url 'account:signup' %}"><i class="fas fa-user-plus"></i> Create an account</a></b>
-                        </li>
+                    <li><a class="dropdown-item" href="{% url 'account:signup' %}">Create an account</a></li>
                     {% endif %}
                 {% else %}
-                    <li class="nav-item">
-                        <b><a class="nav-link" href="{% url 'account:login' %}">Login</a></b>
-                    </li>
-                {% endif %}
-            </ul>
-            <form method="get" class="form-inline" action="{% url 'expenditure:search' %}">
-                <div class="input-group">
-                  <input type="text" class="form-control form-control-custom" name="search" value="{{ query_string }}">
-                  <div class="input-group-append">
-                    <button class="btn btn-light" type="submit"><i class="fas fa-search"></i></button>
-                  </div>
-                </div>
-            </form>
-        </div>
-    </nav>
-
-{% block header %}
+                    <li><a class="dropdown-item" href="{% url 'account:login' %}">Login</a></li>
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
+    </header>
+{% now "Y" as current_year %}
+{% now "m" as current_month %}
+{% include 'sidebar.html' %}
 <br/>
-{% endblock %}
-<div class="container-fluid">
-    <div class="row justify-content-center">
-            {% include 'sidebar.html' %}
-        <div class="col-md-9">
-            <div class="card">
-                {% block content %}
-
-                {% endblock %}
-            </div>
+<main class="app-content">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-dashboard"></i>{% block content_title %}{% endblock %}</h1>
+          <p>{% block content_sub_title %}{% endblock %}</p>
         </div>
-    </div>
-</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div class="tile-body">
+              {% block content %}
+
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
 {% block footer %}
 <br/>
 
 {% endblock %}
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<!-- <script src="{% static 'js/jquery-3.2.1.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script> -->
+<script type="text/javascript" src="{% static 'docs/js/jquery-3.2.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'docs/js/popper.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'docs/js/bootstrap.min.js' %}"></script>
+<!-- DataTables -->
+<script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+<!-- //DataTables -->
+<!-- Other -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-<script type="text/javascript">
+<script src="{% static 'docs/js/plugins/sweetalert.min.js' %}"></script>
+<script src="{% static 'docs/js/plugins/select2.min.js' %}"></script>
+<script src="{% static 'docs/js/plugins/pace.min.js' %}"></script>
+<script src="{% static 'docs/js/plugins/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'docs/js/plugins/jquery.vmap.sampledata.js' %}"></script>
+<script src="{% static 'docs/js/plugins/jquery.vmap.world.js' %}"></script>
+<script src="{% static 'docs/js/plugins/moment.min.js' %}"></script>
+<script src="{% static 'docs/js/plugins/fullcalendar.min.js' %}"></script>
+<script src="{% static 'docs/js/plugins/bootstrap-notify.min.js' %}"></script>
+<script src="{% static 'docs/js/plugins/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'docs/js/main.js' %}"></script>
+<!-- //Other -->
+    <script type="text/javascript">
     $(document).ready(function(){
         {% block jQuery %}
 

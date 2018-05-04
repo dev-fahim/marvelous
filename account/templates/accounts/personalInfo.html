@@ -3,18 +3,21 @@
   Profile {{ request.user.username|title }}
 {% load bootstrap4 %}
 {% endblock %}
+
+{% block header %}{% endblock %}
+{% block content_title %}Profile Settings{% endblock %}
+{% block content_sub_title %}Change your profile informations.{% endblock %}
 {% if request.user.is_authenticated %}
 {% block content %}
-<h5 class="card-header">Change Your Profile Information</h5>
 <form method="post">
-    <div class="card-body custom-card">
+    <div>
         <div class="col-md-6">
                 {% csrf_token %}
                 {% bootstrap_form user_base_form %}
                 {% bootstrap_form user_form %}
         </div>
     </div>
-    <div class="card-footer">
+    <div>
         <input class="btn btn-md btn-primary" type="submit" value="Update Profile"><br/>
     </div>
 </form>

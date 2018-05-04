@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
-{% block header %}
-    <div class="jumbotron">
+{% block header %}{% endblock %}
+{% block content_title %}Dashboard{% endblock %}
+{% block content_sub_title %}Your dashboard.{% endblock %}
+{% block content %}
         <h2>{{ account_header }}</h2>
         <h3>{{ request.user.username|title }}</h3>
-    </div>
 {% endblock %}
