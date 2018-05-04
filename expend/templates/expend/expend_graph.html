@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    Expenditure Graph
+{% endblock %}
+{% block content %}
+{% now "Y" as current_year %}
+<canvas id="myChart"></canvas>
+{% endblock %}
+
+{% block jQuery %}
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                    {% for data in data %}
+                    "{{ data.added_date }}",
+                    {% endfor %}
+                    ],
+            datasets: [{
+                label: '# of Votes',
+                data: [
+                    {% for data in data %}
+                    {{ data.expend_amount }},
+                    {% endfor %}
+                    ],
+                backgroundColor: [
+                    'rgba(75, 192, 255, 0.5)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+{% endblock %}

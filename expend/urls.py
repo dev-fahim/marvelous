@@ -35,5 +35,8 @@ urlpatterns = [
          name="expend_update"),
     path('delete/<int:pk>/', login_required(views.ExpendDeleteView.as_view()),
          name="expend_delete"),
+    path('graph/<slug:year>', login_required(views.ExpendGraph.as_view()),
+         name="expend_graph"
+         ),
     path('/', login_required(views.search), name="search")
 ]

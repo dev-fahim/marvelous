@@ -201,6 +201,17 @@ class ExpendDeleteView(DeleteView):
     context_object_name = 'expend'
 
 
+class ExpendGraph(ListView):
+
+    def get(self, request, *args, **kwargs):
+        template = 'expend/expend_graph.html'
+        year = kwargs['year']
+        context = {
+            'data': models.Expend.objects.filter(added_date__year=year),
+        }
+        return render(request, template_name=template, context=context)
+
+
 def create_expend(request):
     if request.method == 'POST':
         expend_form = forms.ExpendCreateForm(data=request.POST)
