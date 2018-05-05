@@ -9,7 +9,7 @@ $('#table').DataTable( {
         buttons: [
             'copy', 'csv', 'excel', 'pdf',
             {
-            extend: 'print',
+            extend: ['print', 'excel', 'csv', 'copy'],
             exportOptions: {
                         columns: ':visible'
                     },
