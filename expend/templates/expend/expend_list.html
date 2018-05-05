@@ -8,11 +8,19 @@ $('#table').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             {
-            extend: 'csv',
-            extend: 'excel',
-            extend: 'pdf',
-            extend: 'print',
             extend: 'copy',
+            exportOptions: {
+                        columns: ':visible'
+                    },
+            extend: 'csv',
+            exportOptions: {
+                        columns: ':visible'
+                    },
+            extend: 'print',
+            exportOptions: {
+                        columns: ':visible'
+                    },
+            extend: 'pdf',
             exportOptions: {
                         columns: ':visible'
                     },
