@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'expend',
     'bootstrap4',
     'rest_framework',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

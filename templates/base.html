@@ -11,13 +11,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" >
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.bootstrap4.min.css" >
 
-    <style>
-        .btn-mar{margin:2px;border-radius:2px;}
-        .custom-card{
-            max-height:750px;
-            overflow-y:scroll;
-        }
-    </style>
 </head>
 
 <body>
@@ -73,7 +66,7 @@
           <!--</ul>-->
         <!--</li>-->
         <!-- User Menu-->
-        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i>  Account {{ request.user.first_name }}</a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
             {% if request.user.is_authenticated %}
                 <li><a class="dropdown-item" href="{% url 'account:profile' %}">My Account</a></li>
@@ -91,6 +84,7 @@
     </header>
 {% now "Y" as current_year %}
 {% now "m" as current_month %}
+{% now "M" as current_month_name %}
 {% include 'sidebar.html' %}
 <br/>
 <main class="app-content">
@@ -100,15 +94,11 @@
           <p>{% block content_sub_title %}{% endblock %}</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="tile">
-            <div class="tile-body">
-              {% block content %}
-
-              {% endblock %}
-            </div>
-          </div>
+      <div class="">
+        <div class="row">
+            {% block content %}
+  
+            {% endblock %}
         </div>
       </div>
     </main>

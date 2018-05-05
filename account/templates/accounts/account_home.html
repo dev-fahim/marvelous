@@ -1,9 +1,125 @@
 {% extends 'base.html' %}
-{% block title %}Home{% endblock %}
+{% block title %}Manager App | Home{% endblock %}
 {% block header %}{% endblock %}
 {% block content_title %}Dashboard{% endblock %}
-{% block content_sub_title %}Your dashboard.{% endblock %}
+{% block content_sub_title %}Interactive Dashboard{% endblock %}
+{% block jQuery %}
+var ctx = document.getElementById("DashboardChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [
+        		{% for data in dates %}
+        			'{{ data }}',
+        		{% endfor %}
+				],
+        datasets: [{
+            label: 'Expended Amount',
+            data: [
+            	{% for data in total %}
+        			{% if data is None %}
+                    0,
+                    {% else %}
+                    {{ data }},
+                    {% endif %}
+        		{% endfor %}
+            ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.1)',
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+            ],
+            borderWidth: 1
+        },{
+label: 'Source Amount',
+            data: [
+            	{% for data in total_s %}
+        			{% if data is None %}
+                    0,
+                    {% else %}
+                    {{ data }},
+                    {% endif %}
+        		{% endfor %}
+            ],
+            backgroundColor: [
+                'rgb(94, 132, 193, 0.1)',
+            ],
+            borderColor: [
+                'rgba(94, 132, 193,1)',
+            ],
+            borderWidth: 1}
+],
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                },
+                scaleLabel: {
+                display: true,
+                labelString: '<--Expended Amount in TK-->'
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                display: true,
+                labelString: '<--Dates of {{ current_month_name }}-->'
+                }
+            }],
+        }
+    }
+});
+var ctx = document.getElementById("DashboardDoughnut").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: [
+        		'Total utilized expend amount {{ utilized|floatformat }}%',
+                'Total in hand expend amount {{ non_utilized|floatformat }}%'
+				],
+        datasets: [{
+            label: 'Expended Amount',
+            data: [
+                {{ utilized|floatformat }},
+                {{ non_utilized|floatformat }}
+            ],
+            backgroundColor: [
+                'rgba(32, 49, 181,0.9)',
+                'rgba(132,99,255,0.9)'
+            ],
+            borderColor: [
+                'rgba(255,255,255,1)',
+                'rgba(255,255,255,1)',
+            ],
+            borderWidth: 3,
+            hoverBackgroundColor: [ 
+            	'rgb(0, 119, 142, 0.2)',
+            	'rgb(0, 119, 142, 0.2)',
+             ],
+	        hoverBorderColor: [
+	        	'rgb(0, 119, 142, 0.2)',
+            	'rgb(0, 119, 142, 0.2)',
+	         ],
+            hoverBorderWidth: 4,
+        }],
+    },
+});
+{% endblock %}
 {% block content %}
-        <h2>{{ account_header }}</h2>
-        <h3>{{ request.user.username|title }}</h3>
+<div class="col-md-6">
+	<div class="tile">
+		<h3 class="tile-title">This Month Expends</h3>
+		<div class="embed-responsive">
+            <canvas id="DashboardChart"></canvas>
+        </div>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="tile">
+		<h3 class="tile-title">This Month Usage of Funds</h3>
+		<canvas id="DashboardDoughnut"></canvas>
+	</div>
+</div>
 {% endblock %}

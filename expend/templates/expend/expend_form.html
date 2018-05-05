@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content_title %}{% if form.instance.pk %}Update{% else %}Add{% endif %} Expenditure{% endblock %}
 {% block content %}
-{% if request.user.is_authenticated %}
+<div class="col-xs-12"><div class="tile"><div class="tile-body">{% if request.user.is_authenticated %}
     {% if request.user.is_superuser %}
             <form method="post">
                 <div>
@@ -30,5 +30,5 @@
                 </form>
         {% endif %}
     {% endif %}
-{% endif %}
+{% endif %}</div></div></div>
 {% endblock %}

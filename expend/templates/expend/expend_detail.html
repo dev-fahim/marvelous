@@ -1,43 +1,45 @@
 {% extends 'base.html' %}
 {% block title %}Expenditure Detail{% endblock %}
-{% block content %}
-    {% if request.user.is_authenticated and expend.by_user == request.user.username or request.user.is_superuser %}
 {% block content_title %}Espenditure Details{% endblock %}
-{% block content_sub_title %}Based on your account.{% endblock %}            
-            <div>
-                <table class="table">
-                    <tr>
-                        <td><b>Expended By:</b></td>
-                        <td><b><i>{{ expend.by_user|title }}</i></b></td>
-                    </tr><tr>
-                        <td><b>Added Date:</b></td>
-                        <td><b><i>{{ expend.added_date }}<br>{{ expend.added_date|timesince }} ago</i></b></td>
-                    </tr><tr>
-                        <td><b>Last Update:</b></td>
-                        <td><b><i>{{ expend.updated_date }}<br>{{ expend.updated_date|timesince }} ago</i></b></td>
-                    </tr><tr>
-                        <td><b>Source of Fund:</b></td>
-                        <td><b><i>{{ expend.source_fund|title }}</i></b></td>
-                    </tr><tr>
-                        <td><b>Source Amount:</b></td>
-                        <td><b><i>{{ expend.source_amount }}</i> TAKA</b></td>
-                    </tr><tr>
-                        <td><b>Expended in:</b></td>
-                        <td><b><i>{{ expend.expend_in|title }}</i></b></td>
-                    </tr><tr>
-                        <td><b>Expend Amount:</b></td>
-                        <td><b><i>{{ expend.expend_amount }}</i> TAKA</b></td>
-                    </tr>
-                    <tr>
-                        <td><b>Verified:</b></td>
-                        <td>{% if expend.verified == 'no' %}<h4><i class="fas fa-times" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h4>
-                            {% else %}<h4><i class="fas fa-calendar-check" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h4>{% endif %}</td>
-                    </tr><tr>
-                        <td><b>Description:</b></td>
-                        <td><b><i>{% if expend.description == '' %}No Description{% else %}{{ expend.description }}{% endif %}</i></b></td>
-                    </tr>
-                </table>
-            </div>
+{% block content_sub_title %}Based on your account.{% endblock %}
+{% block content %}
+<div class="col-lg-12">
+    {% if request.user.is_authenticated and expend.by_user == request.user.username or request.user.is_superuser %}
+            
+            <div class="tile"><div class="tile-body">
+                            <table class="table">
+                                <tr>
+                                    <td><b>Expended By:</b></td>
+                                    <td><b><i>{{ expend.by_user|title }}</i></b></td>
+                                </tr><tr>
+                                    <td><b>Added Date:</b></td>
+                                    <td><b><i>{{ expend.added_date }}<br>{{ expend.added_date|timesince }} ago</i></b></td>
+                                </tr><tr>
+                                    <td><b>Last Update:</b></td>
+                                    <td><b><i>{{ expend.updated_date }}<br>{{ expend.updated_date|timesince }} ago</i></b></td>
+                                </tr><tr>
+                                    <td><b>Source of Fund:</b></td>
+                                    <td><b><i>{{ expend.source_fund|title }}</i></b></td>
+                                </tr><tr>
+                                    <td><b>Source Amount:</b></td>
+                                    <td><b><i>{{ expend.source_amount }}</i> TAKA</b></td>
+                                </tr><tr>
+                                    <td><b>Expended in:</b></td>
+                                    <td><b><i>{{ expend.expend_in|title }}</i></b></td>
+                                </tr><tr>
+                                    <td><b>Expend Amount:</b></td>
+                                    <td><b><i>{{ expend.expend_amount }}</i> TAKA</b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Verified:</b></td>
+                                    <td>{% if expend.verified == 'no' %}<h4><i class="fas fa-times" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h4>
+                                        {% else %}<h4><i class="fas fa-calendar-check" style="color:#13c44b"></i> <span class="badge badge-success">Verified</span></h4>{% endif %}</td>
+                                </tr><tr>
+                                    <td><b>Description:</b></td>
+                                    <td><b><i>{% if expend.description == '' %}No Description{% else %}{{ expend.description }}{% endif %}</i></b></td>
+                                </tr>
+                            </table>
+                        </div></div>
         {% if request.user.is_authenticated and request.user.is_superuser %}
             <div class="d-print-none">
                 <a class="btn btn-mar btn-sm btn-success" href="{% url 'expenditure:expend_update' pk=expend.pk %}">Update Record</a>
@@ -48,4 +50,5 @@
     {% else %}
         {% include 'access_denied.html' %}
     {% endif %}
+</div>
 {% endblock %}

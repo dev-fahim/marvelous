@@ -7,7 +7,7 @@ $('#table').DataTable( {
         lengthChange: false,
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf',
+            'excel', 'pdf',
             {
             extend: 'print',
             exportOptions: {
@@ -26,7 +26,8 @@ table.buttons().container()
 {% endblock %}
 {% block content_title %}Espenditure All List{% endblock %}
 {% block content_sub_title %}Based on your account.{% endblock %}
-{% block content %}
+{% block content %}<div class="col-lg-12"><div class="tile"><div class="tile-body">
+{% load mathfilters %}
 {% now "Y" as current_year %}
 {% now "m" as current_month %}
             <h5>
@@ -80,8 +81,10 @@ table.buttons().container()
                         <tr>
                             <th>Expended By</th>
                             <th>Source of Fund</th>
+                            <th>Source Amount (In TAKA)</th>
                             <th>Expended In</th>
                             <th>Expend Amount (In TAKA)</th>
+                            <th>Cash In Hand (In TAKA)</th>
                             <th>Expend Date</th>
                             <th class="d-print-none">Action</th>
                             <th>Verified</th>
@@ -92,8 +95,10 @@ table.buttons().container()
                         <tr>
                             <th>Expended By</th>
                             <th>Source of Fund</th>
+                            <th>Source Amount (In TAKA)</th>
                             <th>Expended In</th>
                             <th>Expend Amount (In TAKA)</th>
+                            <th>Cash In Hand (In TAKA)</th>
                             <th>Expend Date</th>
                             <th>Verified</th>
                         </tr>
@@ -105,8 +110,10 @@ table.buttons().container()
                         <tr>
                             <td><a href="{{ expend.get_absolute_url }}">{{ expend.by_user|title }}</a></td>
                             <td>{{ expend.source_fund|title }}</td>
+                            <td>{{ expend.source_amount }}</td>
                             <td>{{ expend.expend_in|title }}</td>
                             <td>{{ expend.expend_amount }}</td>
+                            <td>{{ expend.source_amount|sub:expend.expend_amount }}</td>
                             <td>{{ expend.added_date }}</td>
                             <td class="d-print-none"><a class="btn btn-sm btn-outline-danger" href="{% url 'expenditure:expend_delete' pk=expend.pk %}">Delete</a></td>
                             <th>{% if expend.verified == 'no' %}<h5><i class="fas fa-times d-print-none" style="color:#c91218"></i> <span class="badge badge-danger">Not Verified</span></h5>
@@ -118,6 +125,7 @@ table.buttons().container()
                         <tr>
                             <td><a href="{{ expend.get_absolute_url }}">{{ expend.by_user|title }}</a></td>
                             <td>{{ expend.source_fund|title }}</td>
+                            <td>{{ expend.source_amount }}</td>
                             <td>{{ expend.expend_in|title }}</td>
                             <td>{{ expend.expend_amount }}</td>
                             <td>{{ expend.added_date }}</td>
@@ -129,6 +137,6 @@ table.buttons().container()
                     </tbody>
                 </table>
             </div>
-{% endblock %}
+</div></div></div>{% endblock %}
 
 

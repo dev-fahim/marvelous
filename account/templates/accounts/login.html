@@ -1,33 +1,31 @@
 {% extends "login_base.html" %}
 {% block title %}Login to your account{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-6 col-sm-8">
-                {% if user.is_authenticated %}
-                <div class="alert alert-info" role="alert">
-                  <h4 class="alert-heading">Oh man!!!</h4>
-                  <p>You are already <mark>LOGGED IN</mark>.</p>
-                  <hr>
-                  <a class="btn btn-lg btn-outline-danger" href="{% url 'account:profile' %}">Go bake to your Account.</a>
-                </div>
-                {% else %}
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Log in</h3>
-                        <form method="post" action="{% url 'account:login' %}">
-                            {% csrf_token %}
-                            {% include "form.html" %}
-                            <button type="submit" class="btn btn-block btn-outline-info"><i class="fas fa-sign-in-alt" style="size:1.4em"></i> Login</button>
-                            <input type="hidden" name="next" value="{{ next }}" />
-                        </form>
+    <div class="col-lg-12"><section class="material-half-bg">
+          <div class="cover"></div>
+        </section>
+        <section class="login-content">
+          <div class="logo">
+            <h1>Manager App</h1>
+          </div>
+          <div class="login-box">
+              {% if user.is_authenticated %}
+                    <div class="alert alert-info" role="alert">
+                      <h4 class="alert-heading">Oh man!!!</h4>
+                      <p>You are already <mark>LOGGED IN</mark>.</p>
+                      <hr>
+                      <a class="btn btn-lg btn-outline-danger" href="{% url 'account:profile' %}">Go bake to your Account.</a>
                     </div>
-                    <div class="card-footer text-muted text-center">
-                      Welcome to Manager Application
-                    </div>
-                </div>
-                {% endif %}
-        </div>
-    </div>
-</div>
+                    {% else %}
+            <form class="login-form" method="post" action="{% url 'account:login' %}">
+              <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+                {% csrf_token %}
+                {% include "form.html" %}
+              <div class="form-group btn-container">
+                <button type="submit" class="btn btn-block btn-outline-info">SIGN IN</button>
+              </div>
+            </form>
+              {% endif %}
+          </div>
+        </section></div>
 {% endblock %}

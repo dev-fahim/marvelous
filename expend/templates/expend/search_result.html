@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content_title %}Search Results{% endblock %}
 {% block content_sub_title %}Based on your account.{% endblock %}
-{% block content %}
+{% block content %}<div class="col-lg-12"><div class="tile"><div class="tile-body">
         <div>
             <small class="text-muted">{{ search_result_list.count }} results in {{ time }} seconds</small>
     {% for result in search_result_list %}
@@ -16,4 +16,4 @@
             </div>
     {% endfor %}
         </div>
-{% endblock %}
+</div></div></div>{% endblock %}
