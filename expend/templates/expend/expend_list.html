@@ -7,13 +7,13 @@ $('#table').DataTable( {
         lengthChange: false,
         dom: 'Bfrtip',
         buttons: [
-            'csv','pdf','excel','copy',
+            'csvHtml5','pdfHtml5','excelHtml5','copyHtml5',
             {
-            extend: 'print',
+            extend: 'printHtml5',
             exportOptions: {
                         columns: ':visible'
                     },
-            'columnToggle'
+            'columnsToggle'
         ],
         columnDefs: [ {
             targets: [-1,-2],
