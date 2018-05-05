@@ -11,7 +11,7 @@ python_version = "3.6.4"
 
 
 [packages]
-
+django-mathfilters = "*"
 psycopg2 = "*"
 django-heroku = "*"
 gunicorn = "*"
