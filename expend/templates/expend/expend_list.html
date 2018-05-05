@@ -7,9 +7,12 @@ $('#table').DataTable( {
         lengthChange: false,
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf',
             {
-            extend: ['print', 'excel', 'csv', 'copy'],
+            extend: 'csv',
+            extend: 'excel',
+            extend: 'pdf',
+            extend: 'print',
+            extend: 'csv',
             exportOptions: {
                         columns: ':visible'
                     },
