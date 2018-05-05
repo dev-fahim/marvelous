@@ -108,7 +108,44 @@ var myChart = new Chart(ctx, {
 });
 {% endblock %}
 {% block content %}
-<div class="col-md-6">
+{% if request.user.user_profile.role == 'admin' %}
+    <div class="col-md-3">
+        <div class="widget-small info">
+            <i class="icon fas fa-users fa-3x"></i>
+            <div class="info">
+                <h3 class="tile-title">Total Users</h3>
+                <p><b>{{ user }}</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="widget-small primary">
+            <i class="icon fas fa-users fa-3x"></i>
+            <div class="info">
+                <h3 class="tile-title">Total Users</h3>
+                <p><b>{{ user }}</b></p>
+            </div>
+        </div>
+    </div><div class="col-md-3">
+        <div class="widget-small danger">
+            <i class="icon fas fa-users fa-3x"></i>
+            <div class="info">
+                <h3 class="tile-title">Total Users</h3>
+                <p><b>{{ user }}</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="widget-small warning">
+            <i class="icon fas fa-users fa-3x"></i>
+            <div class="info">
+                <h3 class="tile-title">Total Users</h3>
+                <p><b>{{ user }}</b></p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+    <div class="col-md-6">
 	<div class="tile">
 		<h3 class="tile-title">This Month Expends</h3>
 		<div class="embed-responsive">
@@ -122,4 +159,6 @@ var myChart = new Chart(ctx, {
 		<canvas id="DashboardDoughnut"></canvas>
 	</div>
 </div>
+
+
 {% endblock %}

@@ -13,7 +13,13 @@ class UserProfile(models.Model):
         ('male', 'Male'),
         ('female', 'Female')
     )
+    select_role = (
+        ('admin', 'Admin'),
+        ('co-admin', 'Co-Admin'),
+        ('user', 'User')
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
+    role = models.CharField(choices=select_role, max_length=50, default='user')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     address = models.TextField(blank=True, default='')

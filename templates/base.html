@@ -10,7 +10,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'docs/css/main.css' %}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" >
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.bootstrap4.min.css" >
-
+<style>
+    .tree-aside{
+        margin-left:10px;
+        margin-right:10px;
+    }
+    .margin-right{margin-right:10px;}
+</style>
 </head>
 
 <body>
@@ -66,14 +72,14 @@
           <!--</ul>-->
         <!--</li>-->
         <!-- User Menu-->
-        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i>  Account {{ request.user.first_name }}</a>
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="far fa-user margin-right"></i>Account {{ request.user.first_name }}</a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
             {% if request.user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url 'account:profile' %}">My Account</a></li>
-                <li><a class="dropdown-item" href="{% url 'account:update_profile' %}">Edit Account</a></li>
-                <li><a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:profile' %}"><i class="far fa-user margin-right"></i>My Account</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:update_profile' %}"><i class="fas fa-edit margin-right"></i>Edit Account</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:logout' %}"><i class="fas fa-sign-out-alt margin-right"></i>Logout</a></li>
                     {% if request.user.is_authenticated and request.user.is_superuser %}
-                    <li><a class="dropdown-item" href="{% url 'account:signup' %}">Create an account</a></li>
+                    <li><a class="dropdown-item" href="{% url 'account:signup' %}"><i class="fas fa-user-plus margin-right"></i>Create an account</a></li>
                     {% endif %}
                 {% else %}
                     <li><a class="dropdown-item" href="{% url 'account:login' %}">Login</a></li>
@@ -94,7 +100,7 @@
           <p>{% block content_sub_title %}{% endblock %}</p>
         </div>
       </div>
-      <div class="">
+      <div class="container-fluid">
         <div class="row">
             {% block content %}
   

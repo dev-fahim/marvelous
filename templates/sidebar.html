@@ -2,24 +2,25 @@
     <aside class="app-sidebar">
       <div class="app-sidebar__user">
         <div>
-          <p class="app-sidebar__user-name">{{ request.user.username|title }}</p>
+          <p class="app-sidebar__user-name">{{ request.user.username|title }} ({{ request.user.user_profile.role|title }})</p>
           <p class="app-sidebar__user-designation">{{ request.user.email }}</p>
         </div>
       </div>
       <ul class="app-menu">
-        <li><a class="app-menu__item" href="{% url 'account:home' %}"><i class="icon fas fa-tachometer-alt"></i><span class="app-menu__label">Dashboard</span></a></li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><span class="app-menu__label">Expenditures</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li><a class="app-menu__item" href="{% url 'account:home' %}"><i class="fas fa-tachometer-alt margin-right"></i> Dashboard</a></li>
+        <li><a class="app-menu__item" href="{% url 'account:profile' %}"><i class="far fa-user margin-right"></i> Profile</a></li>
+        <li class="treeview is-expanded"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="far fa-money-bill-alt margin-right"></i><span class="app-menu__label">Expenditures</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-          	<li><a  class="treeview-item"  href="{% url 'expenditure:expend' %}"><i class="icon fa fa-circle-o"></i> Full Expenditure List</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_today' %}"><i class="icon fa fa-circle-o"></i> Today Expenditure List</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_month' year=current_year month=current_month %}"><i class="icon fa fa-circle-o"></i> This Month Expenditure List</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_year' year=current_year %}"><i class="icon fa fa-circle-o"></i> This Year Expenditure List</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_date' %}"><i class="icon fa fa-circle-o"></i> Filter By Date</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_year' %}"><i class="icon fa fa-circle-o"></i> Filter By Year</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_month' %}"><i class="icon fa fa-circle-o"></i> Filter By Month</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_range' %}"><i class="icon fa fa-circle-o"></i> Filter By Date Range</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_create' %}"><i class="icon fa fa-circle-o"></i> Add Expend</a></li>
-            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_graph' year=current_year %}"><i class="icon fa fa-circle-o"></i> This Year Graph</a></li>
+          	<li><a  class="treeview-item"  href="{% url 'expenditure:expend' %}"><i class="far fa-file-alt tree-aside"></i> Full Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_today' %}"><i class="fas fa-angle-double-right tree-aside"></i> Today Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_month' year=current_year month=current_month %}"><i class="fas fa-angle-double-right tree-aside"></i> This Month Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_by_year' year=current_year %}"><i class="fas fa-angle-double-right tree-aside"></i> This Year Expenditure List</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_date' %}"><i class="fas fa-filter tree-aside"></i> Filter By Date</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_year' %}"><i class="fas fa-filter tree-aside"></i> Filter By Year</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_month' %}"><i class="fas fa-filter tree-aside"></i> Filter By Month</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_filter_range' %}"><i class="fas fa-filter tree-aside"></i> Filter By Date Range</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_create' %}"><i class="fas fa-plus tree-aside"></i> Add Expend</a></li>
+            <li><a  class="treeview-item"  href="{% url 'expenditure:expend_graph' year=current_year %}"><i class="fas fa-chart-line tree-aside"></i> This Year Graph</a></li>
           </ul>
         </li>
       </ul>
