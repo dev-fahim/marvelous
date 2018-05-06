@@ -208,7 +208,7 @@ class ExpendGraph(ListView):
         template = 'expend/expend_graph.html'
         year = kwargs['year']
         context = {
-            'data': models.Expend.objects.filter(added_date__year=year),
+            'data': models.Expend.objects.filter(added_date__year=year).order_by('added_date'),
         }
         return render(request, template_name=template, context=context)
 
