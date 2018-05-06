@@ -8,6 +8,7 @@
 {% endblock %}
 {% block content_title %}Expenditure Graph Summary of This Year{% endblock %}
 {% block jQuery %}
+    {% if request.user.user_profile.role == 'admin' or request.user.user_profile.role == 'co-admin' %}
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -49,4 +50,5 @@
             }
         }
     });
+    {% endif %}
 {% endblock %}

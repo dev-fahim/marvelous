@@ -4,8 +4,8 @@
 {% endblock %}
 {% block content_title %}{% if form.instance.pk %}Update{% else %}Add{% endif %} Expenditure{% endblock %}
 {% block content %}
-<div class="col-xs-12"><div class="tile"><div class="tile-body">{% if request.user.is_authenticated %}
-    {% if request.user.is_superuser %}
+<div class="col-lg-12"><div class="tile"><div class="tile-body">{% if request.user.is_authenticated %}
+    {% if request.user.user_profile == 'admin' %}
             <form method="post">
                 <div>
                     {% csrf_token %}
@@ -20,7 +20,7 @@
             {% include 'access_denied.html' %}
         {% else %}
                 <form method="post">
-                    <div class="card-body custom-card">
+                    <div class="tile-body">
                         {% csrf_token %}
                         {% include 'form.html' %}
                     </div>

@@ -3,7 +3,7 @@
     Expenditure List
 {% endblock %}
 {% block jQuery %}
-
+{% if request.user.user_profile.role == 'admin' or request.user.user_profile.role == 'co-admin' %}
 var ctx = document.getElementById("analyse-line").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -120,6 +120,7 @@ var myChart = new Chart(pie, {
         }],
     },
 });
+{% endif %}
 $('#table').DataTable( {
         lengthChange: false,
         dom: 'Bfrtip',
@@ -275,5 +276,3 @@ table.buttons().container().appendTo( '#table_wrapper .col-md-6:eq(0)' );
                             </div>
             </div>
 </div></div></div></div>{% endblock %}
-
-

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Expenditure Delete{% endblock %}
 {% block content %}
-{% if request.user.is_authenticated and request.user.is_superuser %}
+{% if request.user.is_authenticated and request.user.user_profile.role == 'admin' %}
 {% block content_title %}Delete Data{% endblock %}
 {% block content_sub_title %}You can delete data from your database.{% endblock %}
     <div class="col-lg-12"><div class="tile"><div class="tile-body"><h5>

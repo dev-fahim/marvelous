@@ -52,6 +52,7 @@ class ExpendFilterMonthForm(forms.Form):
 
 
 class ExpendFilterRangeForm(forms.Form):
-    date_1 = forms.DateField(required=True)
-    date_2 = forms.DateField(required=True)
-
+    date_1 = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Input Date1 Format : Y-m-d',
+                                                         'class': 'form-control'}), required=True)
+    date_2 = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Input Date2 Format : Y-m-d',
+                                                         'class': 'form-control'}), required=True)

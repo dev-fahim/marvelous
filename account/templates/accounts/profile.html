@@ -1,4 +1,3 @@
 {% extends 'base.html' %}
-{% block title %}Profile {{ request.user.user_profile.slug }}{% endblock %}
+{% block title %}Profile {{ request.user|title }}{% endblock %}
 {% block header %}{% endblock %}
-
