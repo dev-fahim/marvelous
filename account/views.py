@@ -31,7 +31,8 @@ class HomeView(TemplateView, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
         now = datetime.datetime.now()
         if now.month == 1 or now.month == 3 or now.month == 5 or now.month == 7 or now.month == 8:
-            total = [Expend.objects.filter(added_date__year=now.year, added_date__month=now.month, added_date__day=i + 1).aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00) for i in range(31)]
+            total = [Expend.objects.filter(added_date__year=now.year, added_date__month=now.month, added_date__day=i + 1).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00) for i in range(31)]
             dates = [i + 1 for i in range(31)]
             total_s = [
                 Expend.objects.filter(added_date__year=now.year, added_date__month=now.month, added_date__day=i + 1).aggregate(
@@ -44,8 +45,10 @@ class HomeView(TemplateView, LoginRequiredMixin):
                 Expend.objects.filter(added_date__year=now.year, added_date__month=now.month, added_date__day=i + 1).aggregate(
                     Sum('source_amount')).get('source_amount__sum', 0.00) for i in range(30)]
             dates = [i + 1 for i in range(30)]
-        total_all_expend_amount = Expend.objects.filter(added_date__year=now.year, added_date__month=now.month).aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00)
-        total_all_source_amount = Expend.objects.filter(added_date__year=now.year, added_date__month=now.month).aggregate(Sum('source_amount')).get('source_amount__sum', 0.00)
+        total_all_expend_amount = Expend.objects.filter(added_date__year=now.year, added_date__month=now.month).aggregate(
+            Sum('expend_amount')).get('expend_amount__sum', 0.00)
+        total_all_source_amount = Expend.objects.filter(added_date__year=now.year, added_date__month=now.month).aggregate(
+            Sum('source_amount')).get('source_amount__sum', 0.00)
         if total_all_expend_amount is None or total_all_source_amount is None:
             utilized = 0
             non_utilized = 0

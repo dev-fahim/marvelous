@@ -10,6 +10,7 @@ import time
 from .helpers import get_month_name
 from django.db.models import Q
 import re
+from django.contrib.auth.models import User
 today = timezone.localdate()
 # Create your views here.
 
@@ -232,18 +233,47 @@ def expenditure_filter_list_by_year_view(request):
             year = filter_form.cleaned_data['year']
             if year == '':
                 year = None
+            """For Graph"""
+            if year is not None:
+                total = [models.Expend.objects.filter(added_date__year=year, added_date__month=i + 1).aggregate(
+                    Sum('expend_amount')).get('expend_amount__sum', 0.00) for i in range(12)]
+                months = [i + 1 for i in range(12)]
+                total_s = [models.Expend.objects.filter(added_date__year=year, added_date__month=i + 1).aggregate(
+                        Sum('source_amount')).get('source_amount__sum', 0.00) for i in range(12)]
+            else:
+                total_s = []
+                total = []
+            total_all_expend_amount = models.Expend.objects.filter(added_date__year=year).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00)
+            total_all_source_amount = models.Expend.objects.filter(added_date__year=year).aggregate(
+                Sum('source_amount')).get('source_amount__sum', 0.00)
+            if total_all_expend_amount is None or total_all_source_amount is None:
+                utilized = 0
+                non_utilized = 0
+            else:
+                utilized = total_all_expend_amount / total_all_source_amount * 100
+                non_utilized = 100 - utilized
+            """/For Graph"""
             context = {
-                        'form': filter_form,
-                        'filter_by_time': year,
-                        'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year).order_by('-added_date'),
-                        'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'filter_date': models.Expend.objects.filter(added_date__year=year).order_by('-added_date'),
-                        'sum_expend_amount': models.Expend.objects.filter(added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_expend_amount_verified': models.Expend.objects.filter(added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_expend_amount_unverified': models.Expend.objects.filter(added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                      }
+                'form': filter_form,
+                'filter_by_time': year,
+                'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year).order_by('-added_date'),
+                'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'filter_date': models.Expend.objects.filter(added_date__year=year).order_by('-added_date'),
+                'sum_expend_amount': models.Expend.objects.filter(added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_expend_amount_verified': models.Expend.objects.filter(added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_expend_amount_unverified': models.Expend.objects.filter(added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'total': total,
+                'total_s': total_s,
+                'utilized': utilized,
+                'non_utilized': non_utilized,
+                'x_axis': months,
+                'line_head': 'Monthly Line Graph of {}'.format(year),
+                'pie_head': 'Full Year Pie Chart of {}'.format(year),
+                'x': 'Month of {}'.format(year)
+                }
             return render(request, 'expend/expend_list.html', context=context)
     else:
         filter_form = forms.ExpendFilterYearForm
@@ -260,18 +290,53 @@ def expenditure_filter_list_by_month_view(request):
                 year = None
             if month == '':
                 month = None
+            """For Graph"""
+            if month == 1 or month == 3 or month == 5 or month == 7 or month == 8:
+                total = [models.Expend.objects.filter(added_date__year=year, added_date__month=month, added_date__day=i + 1).aggregate(
+                    Sum('expend_amount')).get('expend_amount__sum', 0.00) for i in range(31)]
+                dates = [i + 1 for i in range(31)]
+                total_s = [
+                    models.Expend.objects.filter(added_date__year=year, added_date__month=month, added_date__day=i + 1).aggregate(
+                        Sum('source_amount')).get('source_amount__sum', 0.00) for i in range(31)]
+            else:
+                total = [
+                    models.Expend.objects.filter(added_date__year=year, added_date__month=month, added_date__day=i + 1).aggregate(
+                        Sum('expend_amount')).get('expend_amount__sum', 0.00) for i in range(30)]
+                total_s = [
+                    models.Expend.objects.filter(added_date__year=year, added_date__month=month, added_date__day=i + 1).aggregate(
+                        Sum('source_amount')).get('source_amount__sum', 0.00) for i in range(30)]
+                dates = [i + 1 for i in range(30)]
+            total_all_expend_amount = models.Expend.objects.filter(added_date__year=year, added_date__month=month).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00)
+            total_all_source_amount = models.Expend.objects.filter(added_date__year=year, added_date__month=month).aggregate(
+                Sum('source_amount')).get('source_amount__sum', 0.00)
+            if total_all_expend_amount is None or total_all_source_amount is None:
+                utilized = 0
+                non_utilized = 0
+            else:
+                utilized = total_all_expend_amount / total_all_source_amount * 100
+                non_utilized = 100 - utilized
+            """/For Graph"""
             context = {
-                        'form': filter_form,
-                        'filter_by_time': '{}, {}'.format(get_month_name(num_of_month=month), year),
-                        'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year).order_by('-added_date'),
-                        'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'filter_date': models.Expend.objects.filter(added_date__month=month, added_date__year=year).order_by('-added_date'),
-                        'sum_expend_amount': models.Expend.objects.filter(added_date__month=month, added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_expend_amount_verified': models.Expend.objects.filter(added_date__month=month, added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_expend_amount_unverified': models.Expend.objects.filter(added_date__month=month, added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                      }
+                'form': filter_form,
+                'filter_by_time': '{}, {}'.format(get_month_name(num_of_month=month), year),
+                'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year).order_by('-added_date'),
+                'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__month=month, added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'filter_date': models.Expend.objects.filter(added_date__month=month, added_date__year=year).order_by('-added_date'),
+                'sum_expend_amount': models.Expend.objects.filter(added_date__month=month, added_date__year=year).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_expend_amount_verified': models.Expend.objects.filter(added_date__month=month, added_date__year=year, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_expend_amount_unverified': models.Expend.objects.filter(added_date__month=month, added_date__year=year, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'total': total,
+                'total_s': total_s,
+                'utilized': utilized,
+                'non_utilized': non_utilized,
+                'x_axis': dates,
+                'line_head': 'Daily Line Graph of {}, {}'.format(month, year),
+                'pie_head': 'Full Month Pie Chart of {}, {}'.format(month, year),
+                'x': 'Dates of {}'.format(month)
+                }
             return render(request, 'expend/expend_list.html', context=context)
     else:
         filter_form = forms.ExpendFilterMonthForm
@@ -285,18 +350,40 @@ def expenditure_filter_list_by_date_view(request):
             date = filter_form.cleaned_data['date']
             if date == '':
                 date = None
+            """For Graph"""
+            if date is not None:
+                data = models.Expend.objects.filter(added_date__date=date)
+            else:
+                data = []
+            total_all_expend_amount = models.Expend.objects.filter(added_date__date=date).aggregate(
+                Sum('expend_amount')).get('expend_amount__sum', 0.00)
+            total_all_source_amount = models.Expend.objects.filter(added_date__date=date).aggregate(
+                Sum('source_amount')).get('source_amount__sum', 0.00)
+            if total_all_expend_amount is None or total_all_source_amount is None:
+                utilized = 0
+                non_utilized = 0
+            else:
+                utilized = total_all_expend_amount / total_all_source_amount * 100
+                non_utilized = 100 - utilized
+            """/For Graph"""
             context = {
-                        'form': filter_form,
-                        'filter_by_time': date,
-                        'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date).order_by('-added_date'),
-                        'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'filter_date': models.Expend.objects.filter(added_date__date=date).order_by('-added_date'),
-                        'sum_expend_amount': models.Expend.objects.filter(added_date__date=date).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_expend_amount_verified': models.Expend.objects.filter(added_date__date=date, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                        'sum_expend_amount_unverified': models.Expend.objects.filter(added_date__date=date, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
-                      }
+                'form': filter_form,
+                'filter_by_time': date,
+                'filter_date_user': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date).order_by('-added_date'),
+                'sum_user_expend_amount': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_user_expend_amount_verified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_user_expend_amount_unverified': models.Expend.objects.filter(by_user__exact=request.user.username, added_date__date=date, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'filter_date': models.Expend.objects.filter(added_date__date=date).order_by('-added_date'),
+                'sum_expend_amount': models.Expend.objects.filter(added_date__date=date).order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_expend_amount_verified': models.Expend.objects.filter(added_date__date=date, verified__exact='yes').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'sum_expend_amount_unverified': models.Expend.objects.filter(added_date__date=date, verified__exact='no').order_by('-added_date').aggregate(Sum('expend_amount')).get('expend_amount__sum', 0.00),
+                'date_data': data,
+                'utilized': utilized,
+                'non_utilized': non_utilized,
+                'line_head': 'Line Graph of {}'.format(date),
+                'pie_head': 'Pie Chart of {}'.format(date),
+                'x': 'Times of {}'.format(date)
+                }
             return render(request, 'expend/expend_list.html', context=context)
     else:
         filter_form = forms.ExpendFilterDateForm
