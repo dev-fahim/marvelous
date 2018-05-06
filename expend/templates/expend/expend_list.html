@@ -45,7 +45,7 @@ var myChart = new Chart(ctx, {
             label: 'Source Amount',
             data: [
                 {% if not date_data %}
-                        {% for data in total %}
+                        {% for data in total_s %}
                             {% if data is None %}
                             0,
                             {% else %}
